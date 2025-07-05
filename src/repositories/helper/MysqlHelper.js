@@ -6,34 +6,33 @@ class MysqlHelper {
   static instance = null;
   connection = null;
 
-constructor(connection){
-  this.connection = connection
-}
+  static create() {
+    if (!this.instance) {
+      this.instance = new MysqlHelper();
+    }
 
-static async create(){
-  if(!this.instance){
-    const connection = mysql.createPool({
-      host: 'localhost',
-      user: 'root',
-      password: process.env.MYSQL_PASSWORD,
-      database: process.env.DATABASE_NAME,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0
-    })
-
-
-    
-    this.instance = new MysqlHelper(connection);
+    return this.instance;
   }
 
-    return this.instance
-  }
-
-  getConnection(){
+  getConnection() {
     return this.connection;
   }
-  
+
+  connect() {
+    if (!this.connection) {
+      const connection = mysql.createPool({
+        host: 'localhost',
+        user: 'root',
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.DATABASE_NAME,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+      });
+
+      this.connection = connection;
+    }
+  }
 }
 
 module.exports = MysqlHelper;
