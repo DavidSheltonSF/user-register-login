@@ -1,0 +1,91 @@
+const UserService = require('./UserService');
+const MysqlHelper = require('../repositories/helper/MysqlHelper');
+
+describe('Testing RegisterUserService', () => {
+  async function makeConnectionSUT() {
+    const mysqlHelper = MysqlHelper.create();
+    mysqlHelper.connect();
+    const connection = mysqlHelper.getConnection();
+
+    if (!connection) {
+      throw new Error('Connection is null');
+    }
+
+    return connection;
+  }
+
+  beforeEach(async () => {
+    try {
+      const connection = await makeConnectionSUT();
+      await connection.execute('TRUNCATE TABLE users');
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+  afterAll(async () => {
+    const connection = await makeConnectionSUT();
+    connection.end();
+  });
+
+  test('Should register a new user in the database', async () => {
+    const connection = await makeConnectionSUT();
+    const service = new UserService();
+
+    const fakeUser = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
+
+
+    const response = await service.createUser(fakeUser);
+
+    const registredUser = response.user;
+
+    const result = await connection.query('SELECT * FROM users WHERE id=?', [
+      registredUser.id,
+    ]);
+
+    const [foundUser] = result[0];
+
+    expect(registredUser.id).toBeTruthy();
+    expect(foundUser.username).toBe(fakeUser.username);
+    expect(foundUser.password).toBe(fakeUser.password);
+    expect(foundUser.email).toBe(fakeUser.email);
+    expect(foundUser.phone).toBe(fakeUser.phone);
+  });
+
+  test('Should  not register a user with duplicated email in the database', async () => {
+    const service = new UserService();
+
+    const fakeUser = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
+
+    const userWithDuplicatedEmail = {
+      username: 'UserFakeon',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com/feaf',
+    };
+
+    
+    await service.createUser(fakeUser);
+    await expect(service.createUser(userWithDuplicatedEmail)).rejects.toThrow(
+      `DuplicatedEmailError: the email "${userWithDuplicatedEmail.email}" is already associated to a user`
+    );
+
+
+  });
+});
