@@ -14,7 +14,11 @@ class UserRepository {
   }
 
   async findUserById(id){
+    const connection = this.databaseHandler.getConnection();
 
+    const result = await connection.query('SELECT * FROM users WHERE id=?', [id]);
+
+    return result[0]
   }
 
   async add(userData) {

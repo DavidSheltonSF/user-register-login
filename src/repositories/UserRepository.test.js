@@ -58,11 +58,10 @@ describe('Testing UserRepository', () => {
     const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
-
-   const fakeUsers = [
-     ['TesterJARIA', 'test123', 'test@bugmail', '2325232'],
-     ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
-   ];
+    const fakeUsers = [
+      ['TesterJARIA', 'test123', 'test@bugmail', '2325232'],
+      ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
+    ];
 
     await connection.query(
       `
@@ -74,5 +73,34 @@ describe('Testing UserRepository', () => {
     const result = await userRepository.findAllUsers();
 
     expect(result.length).toBe(fakeUsers.length);
+  });
+
+  test('Should find a user by id', async () => {
+    const connection = await makeConnectionSUT();
+    const userRepository = new UserRepository();
+
+    const fakeUsers = [
+      ['TesterJARIA', 'test123', 'test@bugmail', '2325232'],
+      ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
+    ];
+
+    const [results] = await connection.query(
+      `
+      INSERT INTO users (username, password, email, phone) VALUES ?
+    `,
+      [fakeUsers]
+    );
+
+    const firstUserId = results.insertId;
+    const secondUserId = results.insertId + 1;
+
+    const [foundFirstUser] = await userRepository.findUserById(firstUserId);
+    const [foundSecondUser] = await userRepository.findUserById(secondUserId);
+
+    expect(foundFirstUser.username).toBe(fakeUsers[0][0]);
+    expect(foundFirstUser.password).toBe(fakeUsers[0][1]);
+
+    expect(foundSecondUser.username).toBe(fakeUsers[1][0]);
+    expect(foundSecondUser.password).toBe(fakeUsers[1][1]);
   });
 });
