@@ -7,8 +7,6 @@ class UserRepository {
 
     const { username, password, email, phone } = userData;
 
-    //const query = util.promisify(connection.query).bind(connection);
-
     let userId = undefined;
     const [result] = await connection.query(
       `
