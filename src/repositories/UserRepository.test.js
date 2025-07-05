@@ -7,10 +7,14 @@ describe('Testing UserRepository', () => {
     mysqlHelper.connect();
     const connection = mysqlHelper.getConnection();
 
+    if (!connection) {
+      throw new Error('Connection is null');
+    }
+
     return connection;
   }
 
-  beforeAll(async () => {
+  beforeEach(async () => {
     try {
       const connection = await makeConnectionSUT();
       await connection.execute('TRUNCATE TABLE users');
@@ -29,7 +33,7 @@ describe('Testing UserRepository', () => {
     const userRepository = new UserRepository();
 
     const fakeUser = {
-      username: 'Tester',
+      username: 'TesterFirst',
       password: 'test123',
       email: 'test@bugmail.com',
       phone: '215858484',
@@ -48,5 +52,27 @@ describe('Testing UserRepository', () => {
     expect(foundUser.password).toBe(fakeUser.password);
     expect(foundUser.email).toBe(fakeUser.email);
     expect(foundUser.phone).toBe(fakeUser.phone);
+  });
+
+  test('Should find all users in the database', async () => {
+    const connection = await makeConnectionSUT();
+    const userRepository = new UserRepository();
+
+
+   const fakeUsers = [
+     ['TesterJARIA', 'test123', 'test@bugmail', '2325232'],
+     ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
+   ];
+
+    await connection.query(
+      `
+      INSERT INTO users (username, password, email, phone) VALUES ?
+    `,
+      [fakeUsers]
+    );
+
+    const result = await userRepository.findAllUsers();
+
+    expect(result.length).toBe(fakeUsers.length);
   });
 });
