@@ -1,4 +1,4 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -21,6 +21,8 @@ static async create(){
       connectionLimit: 10,
       queueLimit: 0
     })
+
+
     
     this.instance = new MysqlHelper(connection);
   }
