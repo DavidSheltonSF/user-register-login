@@ -4,7 +4,8 @@ class UserRepository {
   async findAllUsers() {}
 
   async add(userData) {
-    const mysqlHelper = await MysqlHelper.create();
+    const mysqlHelper = MysqlHelper.create();
+    await mysqlHelper.connect();
     const connection = mysqlHelper.getConnection();
 
     const { username, password, email, phone } = userData;

@@ -3,7 +3,8 @@ const MysqlHelper = require('./helper/MysqlHelper');
 
 describe('Testing UserRepository', () => {
   async function makeConnectionSUT() {
-    const mysqlHelper = await MysqlHelper.create();
+    const mysqlHelper = MysqlHelper.create();
+    mysqlHelper.connect();
     const connection = mysqlHelper.getConnection();
 
     return connection;
