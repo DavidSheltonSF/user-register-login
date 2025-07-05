@@ -2,9 +2,11 @@ const MysqlHelper = require('./helper/MysqlHelper');
 
 
 class UserRepository {
+
+  databaseHandler = MysqlHelper.create();
+
   async findAllUsers() {
-    const mysqlHelper = MysqlHelper.create();
-    const connection = mysqlHelper.getConnection();
+    const connection = this.databaseHandler.getConnection();
 
     const result = await connection.query('SELECT * FROM users');
 
@@ -16,8 +18,7 @@ class UserRepository {
   }
 
   async add(userData) {
-    const mysqlHelper = MysqlHelper.create();
-    const connection = mysqlHelper.getConnection();
+   const connection = this.databaseHandler.getConnection();;
 
     const { username, password, email, phone } = userData;
 
