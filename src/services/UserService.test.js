@@ -42,9 +42,7 @@ describe('Testing RegisterUserService', () => {
     };
 
 
-    const response = await service.createUser(fakeUser);
-
-    const registredUser = response.user;
+    const registredUser = await service.createUser(fakeUser);
 
     const result = await connection.query('SELECT * FROM users WHERE id=?', [
       registredUser.id,

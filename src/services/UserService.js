@@ -32,9 +32,9 @@ class UserService {
       });
 
       return {
-        user: registredUser,
-        profile: createdProfile,
-      };
+        ...registredUser,
+        profile: createdProfile
+      }
     } catch (err) {
       console.log(err);
     }
