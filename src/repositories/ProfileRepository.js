@@ -14,10 +14,21 @@ class profileRepository {
   async findprofileById(id) {
     const connection = this.databaseHandler.getConnection();
 
-    const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
+    const [result] = await connection.query('SELECT * FROM profiles WHERE id=?', [
       id,
     ]);
 
+    return result[0];
+  }
+
+  async findprofileByUserId(id) {
+    const connection = this.databaseHandler.getConnection();
+
+    const [result] = await connection.query('SELECT * FROM profiles WHERE user_id=?', [
+      id,
+    ]);
+
+    console.log(result);
     return result[0];
   }
 

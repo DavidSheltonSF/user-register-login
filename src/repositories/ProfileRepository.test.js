@@ -121,11 +121,62 @@ describe('Testing profileRepository', () => {
     const firstprofileId = results.insertId;
     const secondprofileId = results.insertId + 1;
 
-    const [foundFirstprofile] = await profileRepository.findprofileById(
+    const foundFirstprofile = await profileRepository.findprofileById(
       firstprofileId
     );
-    const [foundSecondprofile] = await profileRepository.findprofileById(
+    const foundSecondprofile = await profileRepository.findprofileById(
       secondprofileId
+    );
+
+    expect(foundFirstprofile.user_id).toBe(fakeprofiles[0][0]);
+    expect(foundFirstprofile.birthday.getTime()).toBe(
+      fakeprofiles[0][1].getTime()
+    );
+
+    expect(foundSecondprofile.user_id).toBe(fakeprofiles[1][0]);
+    expect(foundSecondprofile.birthday.getTime()).toBe(
+      fakeprofiles[1][1].getTime()
+    );
+  });
+
+  test('Should find a profile by user_id', async () => {
+    const connection = await makeConnectionSUT();
+    const profileRepository = new ProfileRepository();
+
+    const fakeUsers = [
+      ['TesterJARIA', 'test123', 'test@bugmail', '2325232'],
+      ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
+    ];
+
+    const fakeprofiles = [
+      [1, new Date('2005-02-4'), 'https://path.com/115fsda'],
+      [2, new Date('2005-12-4'), 'https://path.com/dafsfda'],
+    ];
+
+    // Add fake users first
+    await connection.query(
+      `
+      INSERT INTO users (username, password, email, phone) VALUES ?
+    `,
+      [fakeUsers]
+    );
+
+    // Add user profiles
+    const [results] = await connection.query(
+      `
+      INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
+    `,
+      [fakeprofiles]
+    );
+
+    const firstUseId = results.insertId;
+    const secondUserId = results.insertId + 1;
+
+    const foundFirstprofile = await profileRepository.findprofileByUserId(
+      firstUseId
+    );
+    const foundSecondprofile = await profileRepository.findprofileByUserId(
+      secondUserId
     );
 
     expect(foundFirstprofile.user_id).toBe(fakeprofiles[0][0]);
