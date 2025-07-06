@@ -15,7 +15,7 @@ class UserRepository {
   async findUserById(id) {
     const connection = this.databaseHandler.getConnection();
 
-    const result = await connection.query('SELECT * FROM users WHERE id=?', [
+    const [result] = await connection.query('SELECT * FROM users WHERE id=?', [
       id,
     ]);
 
@@ -25,7 +25,7 @@ class UserRepository {
   async findUserByEmail(email) {
     const connection = this.databaseHandler.getConnection();
 
-    const result = await connection.query('SELECT * FROM users WHERE email=?', [
+    const [result] = await connection.query('SELECT * FROM users WHERE email=?', [
       email,
     ]);
 

@@ -94,8 +94,8 @@ describe('Testing UserRepository', () => {
     const firstUserId = results.insertId;
     const secondUserId = results.insertId + 1;
 
-    const [foundFirstUser] = await userRepository.findUserById(firstUserId);
-    const [foundSecondUser] = await userRepository.findUserById(secondUserId);
+    const foundFirstUser = await userRepository.findUserById(firstUserId);
+    const foundSecondUser = await userRepository.findUserById(secondUserId);
 
     expect(foundFirstUser.username).toBe(fakeUsers[0][0]);
     expect(foundFirstUser.password).toBe(fakeUsers[0][1]);
