@@ -1,6 +1,6 @@
 const express = require('express');
-const UserRepository = require('./repositories/UserRepository');
 const MysqlHelper = require('./repositories/helper/MysqlHelper');
+const UserController = require('./controllers/UserController');
 const app = express();
 const port = 3000;
 
@@ -15,17 +15,11 @@ app.use(express.json());
   });
 
   app.post('/register', async (req, res) => {
-    const { username, password, email, phone } = req.body;
-    const userRepository = new UserRepository();
-    const registredUser = await userRepository.add({
-      username,
-      password,
-      email,
-      phone,
-    });
+    const userController = new UserController();
+    const response = await userController.create(req);
 
-    res.status(200).send({
-      body: registredUser
+    res.status(response.status).send({
+      body: response.body,
     });
   });
 
