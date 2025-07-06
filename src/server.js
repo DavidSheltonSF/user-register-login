@@ -1,11 +1,14 @@
 const express = require('express');
 const MysqlHelper = require('./repositories/helper/MysqlHelper');
-const UserController = require('./controllers/UserController');
 const register = require('./routes/register');
+const cookieParser = require('cookie-parser');
+const login = require('./routes/login');
+const findById = require('./routes/findById');
 const app = express();
 const port = 3000;
 
 app.use(express.json());
+app.use(cookieParser());
 
 (async () => {
   const mysqlHelper = MysqlHelper.create();
@@ -15,7 +18,9 @@ app.use(express.json());
     res.send('Eae bro? Bora finalizar esse projeto?');
   });
 
+  app.post('/login', login);
   app.post('/register', register);
+  app.get('/user/:id', findById);
 
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
