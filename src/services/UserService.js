@@ -2,7 +2,7 @@ const UserRepository = require('../repositories/UserRepository');
 const ProfileRepository = require('../repositories/ProfileRepository');
 
 class UserService {
-  async createUser(userData) {
+  async create(userData) {
     const { username, password, email, phone, birthday, profile_picture } =
       userData;
 

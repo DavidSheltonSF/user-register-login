@@ -27,7 +27,7 @@ class UserController {
     }
 
 
-    const response = await this.service.createUser({
+    const response = await this.service.create({
       username,
       password,
       email,

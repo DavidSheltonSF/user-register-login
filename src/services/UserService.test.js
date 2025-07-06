@@ -42,7 +42,7 @@ describe('Testing RegisterUserService', () => {
     };
 
 
-    const registredUser = await service.createUser(fakeUser);
+    const registredUser = await service.create(fakeUser);
 
     const result = await connection.query('SELECT * FROM users WHERE id=?', [
       registredUser.id,
@@ -79,8 +79,8 @@ describe('Testing RegisterUserService', () => {
     };
 
     
-    await service.createUser(fakeUser);
-    await expect(service.createUser(userWithDuplicatedEmail)).rejects.toThrow(
+    await service.create(fakeUser);
+    await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
       `DuplicatedEmailError: the email "${userWithDuplicatedEmail.email}" is already associated to a user`
     );
 
