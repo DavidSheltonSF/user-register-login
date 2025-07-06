@@ -13,28 +13,35 @@ class UserController {
       };
     }
 
-    const { username, password, email, phone, birthday, profile_picture } = body;
+    try {
+      const { username, password, email, phone, birthday, profile_picture } =
+        body;
 
-    const requiredFields = ['username', 'password', 'email'];
+      const requiredFields = ['username', 'password', 'email'];
 
-    for (let i =0; i < requiredFields.length; i++){
-      if(!Object.keys(body).includes(requiredFields[i])){
-        return {
-          status: 400,
-          message: 'Bad Request',
-        };
+      for (let i = 0; i < requiredFields.length; i++) {
+        if (!Object.keys(body).includes(requiredFields[i])) {
+          return {
+            status: 400,
+            message: 'Bad Request',
+          };
+        }
       }
+
+      const response = await this.service.create({
+        username,
+        password,
+        email,
+        phone,
+        birthday,
+        profile_picture,
+      });
+    } catch (err) {
+      return {
+        status: 400,
+        body: err.message,
+      };
     }
-
-
-    const response = await this.service.create({
-      username,
-      password,
-      email,
-      phone,
-      birthday,
-      profile_picture
-    });
 
     return {
       status: 200,
