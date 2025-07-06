@@ -1,5 +1,6 @@
 const UserService = require('./UserService');
 const MysqlHelper = require('../repositories/helper/MysqlHelper');
+const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 
 describe('Testing RegisterUserService', () => {
   async function makeConnectionSUT() {
@@ -41,7 +42,6 @@ describe('Testing RegisterUserService', () => {
       profile_picture: 'https://path.com',
     };
 
-
     const registredUser = await service.create(fakeUser);
 
     const result = await connection.query('SELECT * FROM users WHERE id=?', [
@@ -78,12 +78,9 @@ describe('Testing RegisterUserService', () => {
       profile_picture: 'https://path.com/feaf',
     };
 
-    
     await service.create(fakeUser);
     await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
-      `DuplicatedEmailError: the email "${userWithDuplicatedEmail.email}" is already associated to a user`
+      DuplicatedEmailError
     );
-
-
   });
 });

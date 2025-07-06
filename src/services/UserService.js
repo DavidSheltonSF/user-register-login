@@ -1,5 +1,6 @@
 const UserRepository = require('../repositories/UserRepository');
 const ProfileRepository = require('../repositories/ProfileRepository');
+const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 
 class UserService {
   async create(userData) {
@@ -12,9 +13,7 @@ class UserService {
     const [existingUser] = await userRepository.findUserByEmail(email);
 
     if (existingUser && existingUser.email === email) {
-      throw Error(
-        `DuplicatedEmailError: the email "${email}" is already associated to a user`
-      );
+      throw new DuplicatedEmailError(email);
     }
 
     try {
@@ -33,8 +32,8 @@ class UserService {
 
       return {
         ...registredUser,
-        profile: createdProfile
-      }
+        profile: createdProfile,
+      };
     } catch (err) {
       console.log(err);
     }
