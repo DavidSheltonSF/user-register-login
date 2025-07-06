@@ -10,8 +10,6 @@ async function login(req, res) {
 
   const user = await userController.findByEmail(req);
 
-  console.log(user);
-
   if (!user) {
     res.status(401).send({
       status: 401,

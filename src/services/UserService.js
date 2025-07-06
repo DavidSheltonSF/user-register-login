@@ -52,8 +52,8 @@ class UserService {
     const userProfile = await profileRepository.findprofileByUserId(user.id);
     return {
       ...user,
-      userProfile
-    }
+      userProfile,
+    };
   }
 
   async findByEmail(email) {
@@ -62,19 +62,16 @@ class UserService {
 
     const user = await userRepository.findUserByEmail(email);
 
-    console.log(user)
-
     if (!user) {
       return null;
     }
 
     const userProfile = await profileRepository.findprofileByUserId(user.id);
-    console.log(userProfile);
 
     return {
       ...user,
-      userProfile
-    }
+      userProfile,
+    };
   }
 }
 
