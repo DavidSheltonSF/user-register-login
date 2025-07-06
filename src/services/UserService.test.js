@@ -109,9 +109,12 @@ describe('Testing RegisterUserService', () => {
     await service.create(fakeUser1);
     await service.create(fakeUser2);
 
-    const foundUser = await service.findByEmail(fakeUser2.email);
+    const foundUser1 = await service.findByEmail(fakeUser1.email);
+    const foundUser2 = await service.findByEmail(fakeUser2.email);
 
-    console.log(foundUser)
+
+    expect(foundUser1.username).toBe(fakeUser1.username);
+    expect(foundUser2.username).toBe(fakeUser2.username);
   });
 
   test('Should find user by id', async () => {
