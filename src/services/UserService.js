@@ -10,7 +10,7 @@ class UserService {
     const userRepository = new UserRepository();
     const profileRepository = new ProfileRepository();
 
-    const [existingUser] = await userRepository.findUserByEmail(email);
+    const existingUser = await userRepository.findUserByEmail(email);
 
     if (existingUser && existingUser.email === email) {
       throw new DuplicatedEmailError(email);
@@ -36,6 +36,27 @@ class UserService {
       };
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async findByEmail(email) {
+    const userRepository = new UserRepository();
+    const profileRepository = new ProfileRepository();
+
+    const user = await userRepository.findUserByEmail(email);
+
+    console.log(user)
+
+    if (!user) {
+      return null;
+    }
+
+    const userProfile = await profileRepository.findprofileByUserId(user.id);
+    console.log(userProfile);
+
+    return {
+      ...user,
+      userProfile
     }
   }
 }

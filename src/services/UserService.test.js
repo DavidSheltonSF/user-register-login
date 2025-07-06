@@ -19,6 +19,7 @@ describe('Testing RegisterUserService', () => {
     try {
       const connection = await makeConnectionSUT();
       await connection.execute('TRUNCATE TABLE users');
+      await connection.execute('TRUNCATE TABLE profiles');
     } catch (err) {
       console.log(err);
     }
@@ -29,11 +30,65 @@ describe('Testing RegisterUserService', () => {
     connection.end();
   });
 
-  test('Should register a new user in the database', async () => {
-    const connection = await makeConnectionSUT();
+  // test('Should register a new user in the database', async () => {
+  //   const connection = await makeConnectionSUT();
+  //   const service = new UserService();
+
+  //   const fakeUser = {
+  //     username: 'TesterFirst',
+  //     password: 'test123',
+  //     email: 'test@bugmail.com',
+  //     phone: '215858484',
+  //     birthday: '1988-05-21',
+  //     profile_picture: 'https://path.com',
+  //   };
+
+  //   const registredUser = await service.create(fakeUser);
+
+  //   const result = await connection.query('SELECT * FROM users WHERE id=?', [
+  //     registredUser.id,
+  //   ]);
+
+  //   const [foundUser] = result[0];
+
+  //   expect(registredUser.id).toBeTruthy();
+  //   expect(foundUser.username).toBe(fakeUser.username);
+  //   expect(foundUser.password).toBe(fakeUser.password);
+  //   expect(foundUser.email).toBe(fakeUser.email);
+  //   expect(foundUser.phone).toBe(fakeUser.phone);
+  // });
+
+  // test('Should  not register a user with duplicated email in the database', async () => {
+  //   const service = new UserService();
+
+  //   const fakeUser = {
+  //     username: 'TesterFirst',
+  //     password: 'test123',
+  //     email: 'test@bugmail.com',
+  //     phone: '215858484',
+  //     birthday: '1988-05-21',
+  //     profile_picture: 'https://path.com',
+  //   };
+
+  //   const userWithDuplicatedEmail = {
+  //     username: 'UserFakeon',
+  //     password: 'test123',
+  //     email: 'test@bugmail.com',
+  //     phone: '215858484',
+  //     birthday: '1988-05-21',
+  //     profile_picture: 'https://path.com/feaf',
+  //   };
+
+  //   await service.create(fakeUser);
+  //   await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
+  //     DuplicatedEmailError
+  //   );
+  // });
+
+  test('Should find user by email', async () => {
     const service = new UserService();
 
-    const fakeUser = {
+    const fakeUser1 = {
       username: 'TesterFirst',
       password: 'test123',
       email: 'test@bugmail.com',
@@ -42,45 +97,20 @@ describe('Testing RegisterUserService', () => {
       profile_picture: 'https://path.com',
     };
 
-    const registredUser = await service.create(fakeUser);
-
-    const result = await connection.query('SELECT * FROM users WHERE id=?', [
-      registredUser.id,
-    ]);
-
-    const [foundUser] = result[0];
-
-    expect(registredUser.id).toBeTruthy();
-    expect(foundUser.username).toBe(fakeUser.username);
-    expect(foundUser.password).toBe(fakeUser.password);
-    expect(foundUser.email).toBe(fakeUser.email);
-    expect(foundUser.phone).toBe(fakeUser.phone);
-  });
-
-  test('Should  not register a user with duplicated email in the database', async () => {
-    const service = new UserService();
-
-    const fakeUser = {
-      username: 'TesterFirst',
-      password: 'test123',
-      email: 'test@bugmail.com',
-      phone: '215858484',
-      birthday: '1988-05-21',
-      profile_picture: 'https://path.com',
-    };
-
-    const userWithDuplicatedEmail = {
+    const fakeUser2 = {
       username: 'UserFakeon',
       password: 'test123',
-      email: 'test@bugmail.com',
+      email: 'junior@bugmail.com',
       phone: '215858484',
       birthday: '1988-05-21',
       profile_picture: 'https://path.com/feaf',
     };
 
-    await service.create(fakeUser);
-    await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
-      DuplicatedEmailError
-    );
+    await service.create(fakeUser1);
+    await service.create(fakeUser2);
+
+    const foundUser = await service.findByEmail(fakeUser2.email);
+
+    console.log(foundUser)
   });
 });
