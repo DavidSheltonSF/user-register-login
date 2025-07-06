@@ -5,7 +5,7 @@ dotenv.config();
 
 function cookieJwtAuth(req, res, next) {
   try {
-    const {token} = req.cookies;
+    const { token } = req.cookies;
     const decoded = jwt.verify(token, process.env.MY_SECRET);
 
     req.user = decoded;
