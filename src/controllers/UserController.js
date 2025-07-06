@@ -51,15 +51,34 @@ class UserController {
     }
   }
 
+  async findById(httpRequest) {
+    const { id } = httpRequest.params;
+
+    if (!id) {
+      return {
+        status: 400,
+        error: 'MissingIdError',
+        message: 'Id is missing',
+      };
+    }
+
+    const response = await this.service.findById(id);
+
+    return {
+      status: 200,
+      body: response,
+    };
+  }
+
   async findByEmail(httpRequest) {
     const { email } = httpRequest.body;
 
-    if( !email ){
+    if (!email) {
       return {
         status: 400,
-        error: "MissingEmailError",
-        message: "Email field is missing"
-      }
+        error: 'MissingEmailError',
+        message: 'Email field is missing',
+      };
     }
 
     const response = this.service.findByEmail(email);
