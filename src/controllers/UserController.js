@@ -50,6 +50,22 @@ class UserController {
       };
     }
   }
+
+  async findByEmail(httpRequest) {
+    const { email } = httpRequest.body;
+
+    if( !email ){
+      return {
+        status: 400,
+        error: "MissingEmailError",
+        message: "Email field is missing"
+      }
+    }
+
+    const response = this.service.findByEmail(email);
+
+    return response;
+  }
 }
 
 module.exports = UserController;
