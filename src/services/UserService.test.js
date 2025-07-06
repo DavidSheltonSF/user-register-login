@@ -113,4 +113,35 @@ describe('Testing RegisterUserService', () => {
 
     console.log(foundUser)
   });
+
+  test('Should find user by id', async () => {
+    const service = new UserService();
+
+    const fakeUser1 = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
+
+    const fakeUser2 = {
+      username: 'UserFakeon',
+      password: 'test123',
+      email: 'junior@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com/feaf',
+    };
+
+    await service.create(fakeUser1);
+    await service.create(fakeUser2);
+
+    const foundUser1 = await service.findById(1);
+    const foundUser2 = await service.findById(2);
+
+    expect(foundUser2.username).toBe(fakeUser2.username)
+    expect(foundUser1.username).toBe(fakeUser1.username);
+  });
 });

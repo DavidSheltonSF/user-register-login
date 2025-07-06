@@ -39,6 +39,23 @@ class UserService {
     }
   }
 
+  async findById(id) {
+    const userRepository = new UserRepository();
+    const profileRepository = new ProfileRepository();
+
+    const user = await userRepository.findUserById(id);
+
+    if (!user) {
+      return null;
+    }
+
+    const userProfile = await profileRepository.findprofileByUserId(user.id);
+    return {
+      ...user,
+      userProfile
+    }
+  }
+
   async findByEmail(email) {
     const userRepository = new UserRepository();
     const profileRepository = new ProfileRepository();
