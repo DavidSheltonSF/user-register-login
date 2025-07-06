@@ -4,6 +4,7 @@ const register = require('./routes/register');
 const cookieParser = require('cookie-parser');
 const login = require('./routes/login');
 const findById = require('./routes/findById');
+const cookieJwtAuth = require('./middlewares/cookieJwtAuth');
 const app = express();
 const port = 3000;
 
@@ -20,7 +21,7 @@ app.use(cookieParser());
 
   app.post('/login', login);
   app.post('/register', register);
-  app.get('/user/:id', findById);
+  app.get('/user/:id', cookieJwtAuth, findById);
 
   app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
