@@ -9,7 +9,8 @@ class UserController {
     if (!body) {
       return {
         status: 400,
-        message: 'Bad Request',
+        error: 'MissingFieldsError',
+        message: 'Body is missing in request',
       };
     }
 
@@ -23,7 +24,7 @@ class UserController {
         if (!Object.keys(body).includes(requiredFields[i])) {
           return {
             status: 400,
-            message: 'Bad Request',
+            message: 'One or more required fields are missing in body request',
           };
         }
       }
@@ -44,7 +45,8 @@ class UserController {
     } catch (err) {
       return {
         status: 400,
-        body: err.message,
+        error: err.name,
+        message: err.message,
       };
     }
   }
