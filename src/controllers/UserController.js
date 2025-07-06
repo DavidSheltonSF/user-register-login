@@ -36,17 +36,17 @@ class UserController {
         birthday,
         profile_picture,
       });
+
+      return {
+        status: 200,
+        body: response,
+      };
     } catch (err) {
       return {
         status: 400,
         body: err.message,
       };
     }
-
-    return {
-      status: 200,
-      body: response,
-    };
   }
 }
 
