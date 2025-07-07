@@ -112,7 +112,6 @@ describe('Testing RegisterUserService', () => {
     const foundUser1 = await service.findByEmail(fakeUser1.email);
     const foundUser2 = await service.findByEmail(fakeUser2.email);
 
-
     expect(foundUser1.username).toBe(fakeUser1.username);
     expect(foundUser2.username).toBe(fakeUser2.username);
   });
@@ -144,7 +143,7 @@ describe('Testing RegisterUserService', () => {
     const foundUser1 = await service.findById(1);
     const foundUser2 = await service.findById(2);
 
-    expect(foundUser2.username).toBe(fakeUser2.username)
+    expect(foundUser2.username).toBe(fakeUser2.username);
     expect(foundUser1.username).toBe(fakeUser1.username);
   });
 });
