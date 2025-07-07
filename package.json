@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "David Shelton",
   "type": "commonjs",
-  "main": "server.js",
+  "main": "backend/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node src/server.js"
+    "dev": "node backend/src/server.js"
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
