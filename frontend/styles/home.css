@@ -1,0 +1,20 @@
+.get-started-btn {
+  background-color: green;
+  color: white;
+  font-size: 2em;
+  font-weight: bolder;
+  border-radius: 8px;
+  padding: 20px 60px;
+}
+
+.get-started-btn:hover {
+  transition: background-color 0.3s ease;
+  background-color: rgb(1, 156, 1);
+}
+
+
+.get-started-wrapper {
+  display: flex;
+  align-items: center;
+  height: 190px;
+}

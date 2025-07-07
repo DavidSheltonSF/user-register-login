@@ -2,12 +2,14 @@ const express = require('express');
 const MysqlHelper = require('./repositories/helper/MysqlHelper');
 const register = require('./routes/register');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const login = require('./routes/login');
 const findById = require('./routes/findById');
 const cookieJwtAuth = require('./middlewares/cookieJwtAuth');
 const app = express();
 const port = 3000;
 
+app.use(cors())
 app.use(express.json());
 app.use(cookieParser());
 

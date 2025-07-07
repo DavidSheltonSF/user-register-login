@@ -1,0 +1,66 @@
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 5px;
+  background-color: rgba(48, 124, 196, 0.808);
+  height: 52px;
+}
+
+.nav-btn-container {
+  padding: 3px;
+  height: 100%;
+  margin: 0;
+}
+
+.nav-logo {
+  font-size: 2em;
+  color: white;
+}
+
+.register-btn,
+.login-btn {
+  padding: 10px 25px;
+  margin-left: 5px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 5px;
+  color: white;
+}
+
+.register-btn {
+  background-color: rgb(8, 158, 8);
+}
+
+.register-btn:hover {
+  transition: background-color 0.2s ease;
+  background-color: rgb(8, 179, 8);
+}
+
+.login-btn {
+  background-color: rgb(5, 93, 151);
+}
+
+.login-btn:hover {
+  transition: background-color 0.2s ease;
+  background-color: rgb(7, 125, 204);
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  margin: auto;
+  width: 600px;
+  height: auto;
+  margin-top: 50px;
+  border-radius: 10px;
+  color: rgb(54, 54, 54);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.main-title {
+  font-size: 3em;
+}
+
+

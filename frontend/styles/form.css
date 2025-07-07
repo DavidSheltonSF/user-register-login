@@ -1,0 +1,33 @@
+.form-wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 24px 0;
+  width: 100%;
+}
+
+.fields-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.form-field {
+  border: 1px solid rgb(134, 132, 132);
+  border-radius: 8px;
+  padding: 10px 40px;
+}
+
+.form-btn {
+  background-color: rgb(24, 125, 204);
+  color: white;
+  font-weight: bold;
+  padding: 5px;
+  font-size: 25px;
+  border-radius: 8px;
+}
+
+.form-btn:hover {
+  transition: background-color 0.2s ease;
+  background-color: rgb(23, 140, 230);
+}
