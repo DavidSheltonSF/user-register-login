@@ -49,11 +49,8 @@ describe('Testing profileRepository', () => {
 
     expect(createdProfile.id).toBeTruthy();
     expect(foundprofile.user_id).toBe(profile.user_id);
-    expect(foundprofile.birthday.getTime()).toBe(
-      profile.birthday.getTime()
-    );
+    expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
     expect(foundprofile.profile_picture).toBe(profile.profile_picture);
-
   });
 
   test('Should find all profiles in the database', async () => {
@@ -88,15 +85,11 @@ describe('Testing profileRepository', () => {
     expect(result.length).toBe(profiles.length);
 
     expect(result[0].user_id).toBe(profiles[0].user_id);
-    expect(result[0].birthday.getTime()).toBe(
-      profiles[0].birthday.getTime()
-    );
+    expect(result[0].birthday.getTime()).toBe(profiles[0].birthday.getTime());
     expect(result[0].profile_picture).toBe(profiles[0].profile_picture);
 
     expect(result[1].user_id).toBe(profiles[1].user_id);
-    expect(result[1].birthday.getTime()).toBe(
-      profiles[1].birthday.getTime()
-    );
+    expect(result[1].birthday.getTime()).toBe(profiles[1].birthday.getTime());
     expect(result[1].profile_picture).toBe(profiles[1].profile_picture);
   });
 
