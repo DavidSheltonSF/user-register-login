@@ -1,3 +1,4 @@
+const NotOwnerError = require('../services/errors/NotOwnerError');
 const UserService = require('../services/UserService');
 
 class UserController {
@@ -52,22 +53,45 @@ class UserController {
   }
 
   async findById(httpRequest) {
-    const { id } = httpRequest.params;
+    try {
 
-    if (!id) {
+      const { id } = httpRequest.params;
+      const { authUser } = httpRequest;
+
+      if (!authUser) {
+        return {
+          status: 403,
+          error: 'Forbidden',
+          message: 'You are not authenticated',
+        };
+      }
+
+      if (!id) {
+        return {
+          status: 400,
+          error: 'MissingIdError',
+          message: 'Id is missing',
+        };
+      }
+
+      const response = await this.service.findById(Number(id), authUser.id);
+
       return {
-        status: 400,
-        error: 'MissingIdError',
-        message: 'Id is missing',
+        status: 200,
+        body: response,
       };
+      
+    } catch (err) {
+      console.log(err);
+      
+      if (err instanceof NotOwnerError){
+        return {
+          status: 403,
+          error: 'Forbidden',
+          message: 'You do not have permission to acces this resource',
+        };
+      }
     }
-
-    const response = await this.service.findById(id);
-
-    return {
-      status: 200,
-      body: response,
-    };
   }
 
   async findByEmail(httpRequest) {

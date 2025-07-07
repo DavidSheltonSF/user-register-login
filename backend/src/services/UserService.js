@@ -1,6 +1,7 @@
 const UserRepository = require('../repositories/UserRepository');
 const ProfileRepository = require('../repositories/ProfileRepository');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
+const NotOwnerError = require('./errors/NotOwnerError');
 
 class UserService {
   async create(userData) {
@@ -39,7 +40,12 @@ class UserService {
     }
   }
 
-  async findById(id) {
+  async findById(id, authUserId) {
+
+    if(id !== authUserId){
+      throw new NotOwnerError();
+    }
+
     const userRepository = new UserRepository();
     const profileRepository = new ProfileRepository();
 
