@@ -48,8 +48,12 @@ describe('Testing profileRepository', () => {
     const [foundprofile] = result[0];
 
     expect(createdProfile.id).toBeTruthy();
-    expect(foundprofile.profilename).toBe(fakeprofile.profilename);
-    expect(foundprofile.password).toBe(fakeprofile.password);
+    expect(foundprofile.user_id).toBe(fakeprofile.user_id);
+    expect(foundprofile.birthday.getTime()).toBe(
+      fakeprofile.birthday.getTime()
+    );
+    expect(foundprofile.profile_picture).toBe(fakeprofile.profile_picture);
+
   });
 
   test('Should find all profiles in the database', async () => {
