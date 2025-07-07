@@ -8,7 +8,7 @@ function cookieJwtAuth(req, res, next) {
     const { token } = req.cookies;
     const decoded = jwt.verify(token, process.env.MY_SECRET);
 
-    req.user = decoded;
+    req.authUser = decoded;
 
     next();
   } catch (err) {
