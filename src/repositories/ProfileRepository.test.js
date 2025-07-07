@@ -38,15 +38,15 @@ describe('Testing profileRepository', () => {
       profile_picture: 'https://path.com/daafsfda',
     };
 
-    const createdprofile = await profileRepository.add(fakeprofile);
+    const createdProfile = await profileRepository.add(fakeprofile);
 
     const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
-      createdprofile.id,
+      createdProfile.id,
     ]);
 
     const [foundprofile] = result[0];
 
-    expect(createdprofile.id).toBeTruthy();
+    expect(createdProfile.id).toBeTruthy();
     expect(foundprofile.profilename).toBe(fakeprofile.profilename);
     expect(foundprofile.password).toBe(fakeprofile.password);
     expect(foundprofile.email).toBe(fakeprofile.email);
