@@ -55,23 +55,10 @@ describe('Testing profileRepository', () => {
     const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
-    const fakeUsers = [
-      ['TesterJARIA', 'test123', 'test@bugmail', '2325232'],
-      ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
-    ];
-
     const fakeprofiles = [
       [1, new Date('2005-02-4'), 'https://path.com/115fsda'],
       [2, new Date('2005-12-4'), 'https://path.com/dafsfda'],
     ];
-
-    // Add fake users first
-    await connection.query(
-      `
-      INSERT INTO users (username, password, email, phone) VALUES ?
-    `,
-      [fakeUsers]
-    );
 
     // Add user profiles
     await connection.query(
