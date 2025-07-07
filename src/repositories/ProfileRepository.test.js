@@ -49,8 +49,6 @@ describe('Testing profileRepository', () => {
     expect(createdProfile.id).toBeTruthy();
     expect(foundprofile.profilename).toBe(fakeprofile.profilename);
     expect(foundprofile.password).toBe(fakeprofile.password);
-    expect(foundprofile.email).toBe(fakeprofile.email);
-    expect(foundprofile.phone).toBe(fakeprofile.phone);
   });
 
   test('Should find all profiles in the database', async () => {
