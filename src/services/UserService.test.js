@@ -30,60 +30,60 @@ describe('Testing RegisterUserService', () => {
     connection.end();
   });
 
-  // test('Should register a new user in the database', async () => {
-  //   const connection = await makeConnectionSUT();
-  //   const service = new UserService();
+  test('Should register a new user in the database', async () => {
+    const connection = await makeConnectionSUT();
+    const service = new UserService();
 
-  //   const fakeUser = {
-  //     username: 'TesterFirst',
-  //     password: 'test123',
-  //     email: 'test@bugmail.com',
-  //     phone: '215858484',
-  //     birthday: '1988-05-21',
-  //     profile_picture: 'https://path.com',
-  //   };
+    const fakeUser = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
 
-  //   const registredUser = await service.create(fakeUser);
+    const registredUser = await service.create(fakeUser);
 
-  //   const result = await connection.query('SELECT * FROM users WHERE id=?', [
-  //     registredUser.id,
-  //   ]);
+    const result = await connection.query('SELECT * FROM users WHERE id=?', [
+      registredUser.id,
+    ]);
 
-  //   const [foundUser] = result[0];
+    const [foundUser] = result[0];
 
-  //   expect(registredUser.id).toBeTruthy();
-  //   expect(foundUser.username).toBe(fakeUser.username);
-  //   expect(foundUser.password).toBe(fakeUser.password);
-  //   expect(foundUser.email).toBe(fakeUser.email);
-  //   expect(foundUser.phone).toBe(fakeUser.phone);
-  // });
+    expect(registredUser.id).toBeTruthy();
+    expect(foundUser.username).toBe(fakeUser.username);
+    expect(foundUser.password).toBe(fakeUser.password);
+    expect(foundUser.email).toBe(fakeUser.email);
+    expect(foundUser.phone).toBe(fakeUser.phone);
+  });
 
-  // test('Should  not register a user with duplicated email in the database', async () => {
-  //   const service = new UserService();
+  test('Should  not register a user with duplicated email in the database', async () => {
+    const service = new UserService();
 
-  //   const fakeUser = {
-  //     username: 'TesterFirst',
-  //     password: 'test123',
-  //     email: 'test@bugmail.com',
-  //     phone: '215858484',
-  //     birthday: '1988-05-21',
-  //     profile_picture: 'https://path.com',
-  //   };
+    const fakeUser = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
 
-  //   const userWithDuplicatedEmail = {
-  //     username: 'UserFakeon',
-  //     password: 'test123',
-  //     email: 'test@bugmail.com',
-  //     phone: '215858484',
-  //     birthday: '1988-05-21',
-  //     profile_picture: 'https://path.com/feaf',
-  //   };
+    const userWithDuplicatedEmail = {
+      username: 'UserFakeon',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com/feaf',
+    };
 
-  //   await service.create(fakeUser);
-  //   await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
-  //     DuplicatedEmailError
-  //   );
-  // });
+    await service.create(fakeUser);
+    await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
+      DuplicatedEmailError
+    );
+  });
 
   test('Should find user by email', async () => {
     const service = new UserService();
