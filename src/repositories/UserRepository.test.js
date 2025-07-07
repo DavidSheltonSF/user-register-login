@@ -33,14 +33,14 @@ describe('Testing UserRepository', () => {
     const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
-    const fakeUser = {
+    const user = {
       username: 'Jeronimo',
       password: 'jero123',
       email: 'jeronimo@bugmail.com',
       phone: '21585478565',
     };
 
-    const createduser = await userRepository.add(fakeUser);
+    const createduser = await userRepository.add(user);
 
     const result = await connection.query('SELECT * FROM users WHERE id=?', [
       createduser.id,
@@ -49,17 +49,17 @@ describe('Testing UserRepository', () => {
     const [founduser] = result[0];
 
     expect(createduser.id).toBeTruthy();
-    expect(founduser.username).toBe(fakeUser.username);
-    expect(founduser.password).toBe(fakeUser.password);
-    expect(founduser.email).toBe(fakeUser.email);
-    expect(founduser.phone).toBe(fakeUser.phone);
+    expect(founduser.username).toBe(user.username);
+    expect(founduser.password).toBe(user.password);
+    expect(founduser.email).toBe(user.email);
+    expect(founduser.phone).toBe(user.phone);
   });
 
   test('Should find all users in the database', async () => {
     const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
-    const fakeUsers = [
+    const users = [
       {
         username: 'Jeronimo',
         password: 'jero123',
@@ -74,34 +74,34 @@ describe('Testing UserRepository', () => {
       },
     ];
 
-    const mappedfakeUsers = MysqlMapper.mapUsers(fakeUsers);
+    const mappedusers = MysqlMapper.mapUsers(users);
 
     // Add user users
     await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?
     `,
-      [mappedfakeUsers]
+      [mappedusers]
     );
 
     const result = await userRepository.findAllUsers();
 
-    expect(result[0].username).toBe(fakeUsers[0].username);
-    expect(result[0].password).toBe(fakeUsers[0].password);
-    expect(result[0].email).toBe(fakeUsers[0].email);
-    expect(result[0].phone).toBe(fakeUsers[0].phone);
+    expect(result[0].username).toBe(users[0].username);
+    expect(result[0].password).toBe(users[0].password);
+    expect(result[0].email).toBe(users[0].email);
+    expect(result[0].phone).toBe(users[0].phone);
 
-    expect(result[1].username).toBe(fakeUsers[1].username);
-    expect(result[1].password).toBe(fakeUsers[1].password);
-    expect(result[1].email).toBe(fakeUsers[1].email);
-    expect(result[1].phone).toBe(fakeUsers[1].phone);
+    expect(result[1].username).toBe(users[1].username);
+    expect(result[1].password).toBe(users[1].password);
+    expect(result[1].email).toBe(users[1].email);
+    expect(result[1].phone).toBe(users[1].phone);
   });
 
   test('Should find a user by id', async () => {
     const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
-    const fakeUsers = [
+    const users = [
       {
         username: 'Jeronimo',
         password: 'jero123',
@@ -116,14 +116,14 @@ describe('Testing UserRepository', () => {
       },
     ];
 
-    const mappedfakeUsers = MysqlMapper.mapUsers(fakeUsers);
+    const mappedusers = MysqlMapper.mapUsers(users);
 
     // Add user users
     const [results] = await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?
     `,
-      [mappedfakeUsers]
+      [mappedusers]
     );
 
     const userId1 = results.insertId;
@@ -132,22 +132,22 @@ describe('Testing UserRepository', () => {
     const founduser1 = await userRepository.findUserById(userId1);
     const founduser2 = await userRepository.findUserById(userId2);
 
-    expect(founduser1.username).toBe(fakeUsers[0].username);
-    expect(founduser1.password).toBe(fakeUsers[0].password);
-    expect(founduser1.email).toBe(fakeUsers[0].email);
-    expect(founduser1.phone).toBe(fakeUsers[0].phone);
+    expect(founduser1.username).toBe(users[0].username);
+    expect(founduser1.password).toBe(users[0].password);
+    expect(founduser1.email).toBe(users[0].email);
+    expect(founduser1.phone).toBe(users[0].phone);
 
-    expect(founduser2.username).toBe(fakeUsers[1].username);
-    expect(founduser2.password).toBe(fakeUsers[1].password);
-    expect(founduser2.email).toBe(fakeUsers[1].email);
-    expect(founduser2.phone).toBe(fakeUsers[1].phone);
+    expect(founduser2.username).toBe(users[1].username);
+    expect(founduser2.password).toBe(users[1].password);
+    expect(founduser2.email).toBe(users[1].email);
+    expect(founduser2.phone).toBe(users[1].phone);
   });
 
   test('Should find a user by id', async () => {
     const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
-    const fakeUsers = [
+    const users = [
       {
         username: 'Jeronimo',
         password: 'jero123',
@@ -162,27 +162,27 @@ describe('Testing UserRepository', () => {
       },
     ];
 
-    const mappedfakeUsers = MysqlMapper.mapUsers(fakeUsers);
+    const mappedusers = MysqlMapper.mapUsers(users);
 
     // Add user users
     await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?
     `,
-      [mappedfakeUsers]
+      [mappedusers]
     );
 
-    const founduser1 = await userRepository.findUserByEmail(fakeUsers[0].email);
-    const founduser2 = await userRepository.findUserByEmail(fakeUsers[1].email);
+    const founduser1 = await userRepository.findUserByEmail(users[0].email);
+    const founduser2 = await userRepository.findUserByEmail(users[1].email);
 
-    expect(founduser1.username).toBe(fakeUsers[0].username);
-    expect(founduser1.password).toBe(fakeUsers[0].password);
-    expect(founduser1.email).toBe(fakeUsers[0].email);
-    expect(founduser1.phone).toBe(fakeUsers[0].phone);
+    expect(founduser1.username).toBe(users[0].username);
+    expect(founduser1.password).toBe(users[0].password);
+    expect(founduser1.email).toBe(users[0].email);
+    expect(founduser1.phone).toBe(users[0].phone);
 
-    expect(founduser2.username).toBe(fakeUsers[1].username);
-    expect(founduser2.password).toBe(fakeUsers[1].password);
-    expect(founduser2.email).toBe(fakeUsers[1].email);
-    expect(founduser2.phone).toBe(fakeUsers[1].phone);
+    expect(founduser2.username).toBe(users[1].username);
+    expect(founduser2.password).toBe(users[1].password);
+    expect(founduser2.email).toBe(users[1].email);
+    expect(founduser2.phone).toBe(users[1].phone);
   });
 });
