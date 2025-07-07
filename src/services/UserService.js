@@ -52,7 +52,7 @@ class UserService {
     const userProfile = await profileRepository.findprofileByUserId(user.id);
     return {
       ...user,
-      userProfile,
+      profile: userProfile,
     };
   }
 
