@@ -55,7 +55,7 @@ describe('Testing profileRepository', () => {
     const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
-    const fakeprofiles = [
+    const fakeProfiles = [
       [1, new Date('2005-02-4'), 'https://path.com/115fsda'],
       [2, new Date('2005-12-4'), 'https://path.com/dafsfda'],
     ];
@@ -65,12 +65,12 @@ describe('Testing profileRepository', () => {
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
     `,
-      [fakeprofiles]
+      [fakeProfiles]
     );
 
     const result = await profileRepository.findAllprofiles();
 
-    expect(result.length).toBe(fakeprofiles.length);
+    expect(result.length).toBe(fakeProfiles.length);
   });
 
   test('Should find a profile by id', async () => {
@@ -82,7 +82,7 @@ describe('Testing profileRepository', () => {
       ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
     ];
 
-    const fakeprofiles = [
+    const fakeProfiles = [
       [1, new Date('2005-02-4'), 'https://path.com/115fsda'],
       [2, new Date('2005-12-4'), 'https://path.com/dafsfda'],
     ];
@@ -100,7 +100,7 @@ describe('Testing profileRepository', () => {
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
     `,
-      [fakeprofiles]
+      [fakeProfiles]
     );
 
     const firstprofileId = results.insertId;
@@ -113,14 +113,14 @@ describe('Testing profileRepository', () => {
       secondprofileId
     );
 
-    expect(foundFirstprofile.user_id).toBe(fakeprofiles[0][0]);
+    expect(foundFirstprofile.user_id).toBe(fakeProfiles[0][0]);
     expect(foundFirstprofile.birthday.getTime()).toBe(
-      fakeprofiles[0][1].getTime()
+      fakeProfiles[0][1].getTime()
     );
 
-    expect(foundSecondprofile.user_id).toBe(fakeprofiles[1][0]);
+    expect(foundSecondprofile.user_id).toBe(fakeProfiles[1][0]);
     expect(foundSecondprofile.birthday.getTime()).toBe(
-      fakeprofiles[1][1].getTime()
+      fakeProfiles[1][1].getTime()
     );
   });
 
@@ -133,7 +133,7 @@ describe('Testing profileRepository', () => {
       ['TesterSUPREM', 'test123', 'test111@bugmail', '2325855241'],
     ];
 
-    const fakeprofiles = [
+    const fakeProfiles = [
       [1, new Date('2005-02-4'), 'https://path.com/115fsda'],
       [2, new Date('2005-12-4'), 'https://path.com/dafsfda'],
     ];
@@ -151,7 +151,7 @@ describe('Testing profileRepository', () => {
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
     `,
-      [fakeprofiles]
+      [fakeProfiles]
     );
 
     const firstUseId = results.insertId;
@@ -164,14 +164,14 @@ describe('Testing profileRepository', () => {
       secondUserId
     );
 
-    expect(foundFirstprofile.user_id).toBe(fakeprofiles[0][0]);
+    expect(foundFirstprofile.user_id).toBe(fakeProfiles[0][0]);
     expect(foundFirstprofile.birthday.getTime()).toBe(
-      fakeprofiles[0][1].getTime()
+      fakeProfiles[0][1].getTime()
     );
 
-    expect(foundSecondprofile.user_id).toBe(fakeprofiles[1][0]);
+    expect(foundSecondprofile.user_id).toBe(fakeProfiles[1][0]);
     expect(foundSecondprofile.birthday.getTime()).toBe(
-      fakeprofiles[1][1].getTime()
+      fakeProfiles[1][1].getTime()
     );
   });
 });
