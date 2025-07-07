@@ -33,13 +33,13 @@ describe('Testing profileRepository', () => {
     const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
-    const fakeprofile = {
+    const profile = {
       user_id: 1,
       birthday: new Date('2002-02-26'),
       profile_picture: 'https://path.com/daafsfda',
     };
 
-    const createdProfile = await profileRepository.add(fakeprofile);
+    const createdProfile = await profileRepository.add(profile);
 
     const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
       createdProfile.id,
@@ -48,11 +48,11 @@ describe('Testing profileRepository', () => {
     const [foundprofile] = result[0];
 
     expect(createdProfile.id).toBeTruthy();
-    expect(foundprofile.user_id).toBe(fakeprofile.user_id);
+    expect(foundprofile.user_id).toBe(profile.user_id);
     expect(foundprofile.birthday.getTime()).toBe(
-      fakeprofile.birthday.getTime()
+      profile.birthday.getTime()
     );
-    expect(foundprofile.profile_picture).toBe(fakeprofile.profile_picture);
+    expect(foundprofile.profile_picture).toBe(profile.profile_picture);
 
   });
 
@@ -60,7 +60,7 @@ describe('Testing profileRepository', () => {
     const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
-    const fakeProfiles = [
+    const profiles = [
       {
         user_id: 1,
         birthday: new Date('2005-02-4'),
@@ -73,38 +73,38 @@ describe('Testing profileRepository', () => {
       },
     ];
 
-    const mappedFakeProfiles = MysqlMapper.mapProfiles(fakeProfiles);
+    const mappedProfiles = MysqlMapper.mapProfiles(profiles);
 
     // Add user profiles
     await connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
     `,
-      [mappedFakeProfiles]
+      [mappedProfiles]
     );
 
     const result = await profileRepository.findAllprofiles();
 
-    expect(result.length).toBe(fakeProfiles.length);
+    expect(result.length).toBe(profiles.length);
 
-    expect(result[0].user_id).toBe(fakeProfiles[0].user_id);
+    expect(result[0].user_id).toBe(profiles[0].user_id);
     expect(result[0].birthday.getTime()).toBe(
-      fakeProfiles[0].birthday.getTime()
+      profiles[0].birthday.getTime()
     );
-    expect(result[0].profile_picture).toBe(fakeProfiles[0].profile_picture);
+    expect(result[0].profile_picture).toBe(profiles[0].profile_picture);
 
-    expect(result[1].user_id).toBe(fakeProfiles[1].user_id);
+    expect(result[1].user_id).toBe(profiles[1].user_id);
     expect(result[1].birthday.getTime()).toBe(
-      fakeProfiles[1].birthday.getTime()
+      profiles[1].birthday.getTime()
     );
-    expect(result[1].profile_picture).toBe(fakeProfiles[1].profile_picture);
+    expect(result[1].profile_picture).toBe(profiles[1].profile_picture);
   });
 
   test('Should find a profile by id', async () => {
     const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
-    const fakeProfiles = [
+    const profiles = [
       {
         user_id: 1,
         birthday: new Date('2005-02-4'),
@@ -117,14 +117,14 @@ describe('Testing profileRepository', () => {
       },
     ];
 
-    const mappedFakeProfiles = MysqlMapper.mapProfiles(fakeProfiles);
+    const mappedProfiles = MysqlMapper.mapProfiles(profiles);
 
     // Add user profiles
     const [results] = await connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
     `,
-      [mappedFakeProfiles]
+      [mappedProfiles]
     );
 
     const profileId1 = results.insertId;
@@ -133,14 +133,14 @@ describe('Testing profileRepository', () => {
     const foundProfile1 = await profileRepository.findprofileById(profileId1);
     const foundProfile2 = await profileRepository.findprofileById(profileId2);
 
-    expect(foundProfile1.user_id).toBe(fakeProfiles[0].user_id);
+    expect(foundProfile1.user_id).toBe(profiles[0].user_id);
     expect(foundProfile1.birthday.getTime()).toBe(
-      fakeProfiles[0].birthday.getTime()
+      profiles[0].birthday.getTime()
     );
 
-    expect(foundProfile2.user_id).toBe(fakeProfiles[1].user_id);
+    expect(foundProfile2.user_id).toBe(profiles[1].user_id);
     expect(foundProfile2.birthday.getTime()).toBe(
-      fakeProfiles[1].birthday.getTime()
+      profiles[1].birthday.getTime()
     );
   });
 
@@ -163,7 +163,7 @@ describe('Testing profileRepository', () => {
       },
     ];
 
-    const fakeProfiles = [
+    const profiles = [
       {
         user_id: 1,
         birthday: new Date('2005-02-4'),
@@ -177,7 +177,7 @@ describe('Testing profileRepository', () => {
     ];
 
     const mappedFakeUsers = MysqlMapper.mapUsers(fakeUsers);
-    const mappedFakeProfiles = MysqlMapper.mapProfiles(fakeProfiles);
+    const mappedProfiles = MysqlMapper.mapProfiles(profiles);
 
     // Add fake users first
     await connection.query(
@@ -192,7 +192,7 @@ describe('Testing profileRepository', () => {
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
     `,
-      [mappedFakeProfiles]
+      [mappedProfiles]
     );
 
     const userId1 = results.insertId;
@@ -202,17 +202,17 @@ describe('Testing profileRepository', () => {
     const foundProfile2 = await profileRepository.findprofileByUserId(userId2);
 
     expect(foundProfile1.user_id).toBe(userId1);
-    expect(foundProfile1.user_id).toBe(fakeProfiles[0].user_id);
+    expect(foundProfile1.user_id).toBe(profiles[0].user_id);
     expect(foundProfile1.birthday.getTime()).toBe(
-      fakeProfiles[0].birthday.getTime()
+      profiles[0].birthday.getTime()
     );
-    expect(foundProfile1.profile_picture).toBe(fakeProfiles[0].profile_picture);
+    expect(foundProfile1.profile_picture).toBe(profiles[0].profile_picture);
 
     expect(foundProfile2.user_id).toBe(userId2);
-    expect(foundProfile2.user_id).toBe(fakeProfiles[1].user_id);
+    expect(foundProfile2.user_id).toBe(profiles[1].user_id);
     expect(foundProfile2.birthday.getTime()).toBe(
-      fakeProfiles[1].birthday.getTime()
+      profiles[1].birthday.getTime()
     );
-    expect(foundProfile2.profile_picture).toBe(fakeProfiles[1].profile_picture);
+    expect(foundProfile2.profile_picture).toBe(profiles[1].profile_picture);
   });
 });
