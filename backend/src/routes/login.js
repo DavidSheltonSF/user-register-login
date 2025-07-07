@@ -18,9 +18,6 @@ async function login(req, res) {
     });
   }
 
-  console.log(password);
-  console.log(user.password);
-
   if (password !== user.password) {
     res.status(401).send({
       status: 401,
