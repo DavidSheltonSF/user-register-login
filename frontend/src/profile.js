@@ -60,16 +60,20 @@ document.addEventListener('DOMContentLoaded', async () => {
           </form>`;
 
       const mainTitle = document.querySelector('.main-title');
+      const profilePicture = document.querySelector('.profile-picture');
       const usernameField = document.querySelector('.username-field');
       const emailField = document.querySelector('.email-field');
       const phoneField = document.querySelector('.phone-field');
       const birthdayField = document.querySelector('.birthday-field');
 
       mainTitle.innerText = `Hi, ${username}!`;
+      profilePicture.src = profile.profile_picture
       usernameField.value = username;
       emailField.value = email;
       phoneField.value = phone;
       birthdayField.value = profile.birthday;
+
+      console.log(profile.profile_picture)
 
   } catch (err) {
     console.log(err);
