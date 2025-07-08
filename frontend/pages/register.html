@@ -26,44 +26,50 @@
       <section class="main-container">
         <h2 class="main-title">Register</h2>
         <div const class="form-wrapper">
-          <form action="">
+          <form id="register-form" action="">
             <div class="fields-wrapper">
               <input
                 class="form-field username-field"
                 placeholder="username"
                 type="text"
+                name="username"
                 required
               />
               <input
                 class="form-field password-field"
                 placeholder="password"
                 type="password"
+                name="password"
                 required
               />
               <input
                 class="form-field email-field"
                 placeholder="email"
                 type="email"
+                name="email"
                 required
               />
               <input
                 class="form-field phone-field"
                 placeholder="phone"
                 type="tel"
+                name="phone"
                 required
               />
               <input
                 class="form-field birthday-field"
                 placeholder="birthday"
+                name="birthday"
                 type="date"
               />
               <input
                 class="form-field profile-picture-field"
                 placeholder="profile picture"
                 type="file"
+                name="profile_picture"
                 accept="png jpeg"
               />
-              <button class="form-btn form-register-btn">Register</button>
+              <button type="submit" class="form-btn form-register-btn">Register</button>
             </div>
           </form>
         </div>
