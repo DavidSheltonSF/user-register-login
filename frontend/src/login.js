@@ -10,8 +10,6 @@ loginForm.addEventListener('submit', async (e) => {
     password: form.password.value,
   };
 
-  console.log(userData);
-
   try {
     const response = await fetch('http://localhost:3000/login', {
       method: 'POST',
@@ -21,21 +19,19 @@ loginForm.addEventListener('submit', async (e) => {
       },
       body: JSON.stringify(userData),
     });
-    console.log(response);
 
     const data = await response.json();
 
     if (response.status < 400) {
-      window.location.href = "./profile.html"
+      window.location.href = './profile.html';
     } else if (response.status < 500) {
       alert(data.message);
       console.log(data.message);
     } else {
       alert('Server Error');
-      console.log(response)
+      console.log(response);
     }
   } catch (err) {
-    console.log('error!!!!');
     console.log(err);
     alert('Server Error');
   }
