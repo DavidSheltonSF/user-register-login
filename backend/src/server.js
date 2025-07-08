@@ -7,6 +7,7 @@ const login = require('./routes/login');
 const findById = require('./routes/findById');
 const cookieJwtAuth = require('./middlewares/cookieJwtAuth');
 const upload = require('./middlewares/upload');
+const me = require('./routes/me');
 
 const app = express();
 const port = 3000;
@@ -29,6 +30,7 @@ app.use(cookieParser());
     res.send('Eae bro? Bora finalizar esse projeto?');
   });
 
+  app.get('/me', cookieJwtAuth, me);
   app.post('/login', login);
   app.post('/register', upload.single('profile_picture'), register);
   app.get('/user/:id', cookieJwtAuth, findById);
