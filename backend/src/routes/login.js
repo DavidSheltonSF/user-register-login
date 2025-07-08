@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const UserController = require('../controllers/UserController');
+const BcryptHelper = require('../services/helpers/BcryptHelper');
 
 dotenv.config();
 
@@ -19,7 +20,9 @@ async function login(req, res) {
       });
     }
 
-    if (password !== user.password) {
+    const equalPassword = await BcryptHelper.compare(password, user.password);
+
+    if (!equalPassword) {
       res.status(401).send({
         status: 401,
         error: 'Unauthorized',
