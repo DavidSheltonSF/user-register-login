@@ -32,9 +32,15 @@ async function login(req, res) {
 
     delete user.password;
 
-    const token = jwt.sign(user, process.env.MY_SECRET, { expiresIn: '1min' });
+    const token = jwt.sign(user, process.env.MY_SECRET, { expiresIn: '1h' });
 
-    res.cookie('token', token);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: false, // true se usar HTTPS
+      path: '/',
+      sameSite: 'lax',
+      maxAge: 1000 * 60 * 60, // 1 hora
+    });
 
     res.status(200).send({
       user: user,
