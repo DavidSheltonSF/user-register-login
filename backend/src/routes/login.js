@@ -13,7 +13,7 @@ async function login(req, res) {
     const user = await userController.findByEmail(req);
 
     if (!user) {
-      res.status(401).send({
+      return res.status(401).send({
         status: 401,
         error: 'Unauthorized',
         message: 'The user with the email provided was not found',
@@ -23,7 +23,7 @@ async function login(req, res) {
     const equalPassword = await BcryptHelper.compare(password, user.password);
 
     if (!equalPassword) {
-      res.status(401).send({
+      return res.status(401).send({
         status: 401,
         error: 'Unauthorized',
         message: 'The password provided is wrong',
