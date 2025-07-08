@@ -56,7 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 type="date"
                 disabled
               />
-              <button type="submit" class="form-btn form-register-btn">Register</button>
             </div>
           </form>`;
 
