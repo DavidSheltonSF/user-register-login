@@ -23,19 +23,16 @@ loginForm.addEventListener('submit', async (e) => {
     });
     console.log(response);
 
-    if (response.status < 500) {
-      const data = await response.json();
-      console.log(data);
-    }
+    const data = await response.json();
 
     if (response.status < 400) {
-      console.log('User logged succesfuly!');
       window.location.href = "./profile.html"
     } else if (response.status < 500) {
       alert(data.message);
       console.log(data.message);
     } else {
       alert('Server Error');
+      console.log(response)
     }
   } catch (err) {
     console.log('error!!!!');
