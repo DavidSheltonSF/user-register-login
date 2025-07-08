@@ -63,4 +63,15 @@
   font-size: 3em;
 }
 
+.flex-container-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0;
+  width: 100%;
+}
+
+.cls-display-none {
+  display: none;
+}
 
