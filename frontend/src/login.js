@@ -28,8 +28,8 @@ loginForm.addEventListener('submit', async (e) => {
     }
 
     if (response.status < 400) {
-      alert('User logged succesfuly!');
       console.log('User logged succesfuly!');
+      window.location.href = "./profile.html"
     } else if (response.status < 500) {
       alert(data.message);
       console.log(data.message);
