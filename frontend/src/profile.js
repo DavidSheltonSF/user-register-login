@@ -59,11 +59,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           </form>`;
 
+      const mainTitle = document.querySelector('.main-title');
       const usernameField = document.querySelector('.username-field');
       const emailField = document.querySelector('.email-field');
       const phoneField = document.querySelector('.phone-field');
       const birthdayField = document.querySelector('.birthday-field');
 
+      mainTitle.innerText = `Hi, ${username}!`;
       usernameField.value = username;
       emailField.value = email;
       phoneField.value = phone;
