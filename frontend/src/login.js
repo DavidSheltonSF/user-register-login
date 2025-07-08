@@ -28,8 +28,8 @@ loginForm.addEventListener('submit', async (e) => {
     }
 
     if (response.status < 400) {
-      alert('User registred succesfuly!');
-      console.log('User registred succesfuly!');
+      alert('User logged succesfuly!');
+      console.log('User logged succesfuly!');
     } else if (response.status < 500) {
       alert(data.message);
       console.log(data.message);
@@ -39,5 +39,6 @@ loginForm.addEventListener('submit', async (e) => {
   } catch (err) {
     console.log('error!!!!');
     console.log(err);
+    alert('Server Error');
   }
 });
