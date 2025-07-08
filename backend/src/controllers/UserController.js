@@ -54,7 +54,6 @@ class UserController {
 
   async findById(httpRequest) {
     try {
-
       const { id } = httpRequest.params;
       const { authUser } = httpRequest;
 
@@ -74,17 +73,29 @@ class UserController {
         };
       }
 
-      const response = await this.service.findById(Number(id), authUser.id);
+      const user = await this.service.findById(Number(id), authUser.id);
+
+      const userBirthday = user.profile.birthday;
+      const formatedBirthday = userBirthday.toISOString().split('T')[0];
 
       return {
         status: 200,
-        body: response,
+        body: {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          phone: user.phone,
+          profile: {
+            id: 1,
+            birthday: formatedBirthday,
+            profile_picture: null,
+          },
+        },
       };
-      
     } catch (err) {
       console.log(err);
-      
-      if (err instanceof NotOwnerError){
+
+      if (err instanceof NotOwnerError) {
         return {
           status: 403,
           error: 'Forbidden',
