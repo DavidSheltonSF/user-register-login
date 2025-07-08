@@ -16,7 +16,10 @@ class UserController {
     }
 
     try {
-      const { username, password, email, phone, birthday, profile_picture } =
+
+      const file = httpRequest.file
+
+      const { username, password, email, phone, birthday } =
         body;
 
       const requiredFields = ['username', 'password', 'email'];
@@ -29,14 +32,14 @@ class UserController {
           };
         }
       }
-
+      
       const response = await this.service.create({
         username,
         password,
         email,
         phone,
         birthday,
-        profile_picture,
+        profile_picture: file ? file.path : undefined,
       });
 
       return {
@@ -88,7 +91,7 @@ class UserController {
           profile: {
             id: 1,
             birthday: formatedBirthday,
-            profile_picture: null,
+            profile_picture: user.profile.profile_picture,
           },
         },
       };
