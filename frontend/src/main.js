@@ -5,42 +5,47 @@ const phoneField = document.querySelector('.phone-field');
 const birthdayField = document.querySelector('.birthday-field');
 const profilePictureField = document.querySelector('.profile-picture-field');
 
-const registerButton = document.querySelector('.form-register-btn');
+const registerForm = document.querySelector('#register-form');
 
-registerButton.addEventListener('click', async (e) => {
+registerForm.addEventListener('submit', async (e) => {
   e.preventDefault();
-  const username = usernameField.value;
-  const password = passwordField.value;
-  const email = emailField.value;
-  const phone = phoneField.value;
-  const birthday = birthdayField.value;
-  const profilePicture = profilePictureField.value;
-  // usernameField.value = '';
-  // passwordField.value = '';
-  // emailField.value = '';
-  // phoneField.value = '';
-  // birthdayField.value = '';
-  // profilePictureField.value = '';
 
-  const data = {
-    username,
-    password,
-    email,
-    phone,
-    birthday,
-    profile_picture: profilePicture,
-  };
+  const form = e.target;
+  const formData = new FormData(form);
+
   try {
     const response = await fetch('http://localhost:3000/register', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
+      body: formData,
     });
-    console.log(response)
+    console.log(response);
+
+    if(response.status < 500){
+      const data = await response.json();
+      console.log(data);
+    }
+    
+    if(response.status < 400){
+      alert('User registred succesfuly!');
+      console.log('User registred succesfuly!');
+      usernameField.value = '';
+      passwordField.value = '';
+      emailField.value = '';
+      phoneField.value = '';
+      birthdayField.value = '';
+      profilePictureField.value = '';
+    }
+
+    else if (response.status < 500) {
+      alert(data.message);
+      console.log(data.message);
+    } 
+    else {
+      alert('Server Error')
+    }
+
   } catch (err) {
-    console.log('error!!!!')
+    console.log('error!!!!');
     console.log(err);
   }
 });
