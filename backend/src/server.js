@@ -11,7 +11,13 @@ const upload = require('./middlewares/upload');
 const app = express();
 const port = 3000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5500',
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(cookieParser());
 
