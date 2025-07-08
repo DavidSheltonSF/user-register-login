@@ -2,11 +2,14 @@ const UserRepository = require('../repositories/UserRepository');
 const ProfileRepository = require('../repositories/ProfileRepository');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 const NotOwnerError = require('./errors/NotOwnerError');
+const BcryptHelper = require('./helpers/BcryptHelper');
 
 class UserService {
   async create(userData) {
     const { username, password, email, phone, birthday, profile_picture } =
       userData;
+
+    const hashedPassword = await BcryptHelper.hashPassword(password);
 
     const userRepository = new UserRepository();
     const profileRepository = new ProfileRepository();
@@ -16,11 +19,11 @@ class UserService {
     if (existingUser && existingUser.email === email) {
       throw new DuplicatedEmailError(email);
     }
-
+    
     try {
       const registredUser = await userRepository.add({
         username,
-        password,
+        password: hashedPassword,
         email,
         phone,
       });
@@ -41,8 +44,7 @@ class UserService {
   }
 
   async findById(id, authUserId) {
-
-    if(id !== authUserId){
+    if (id !== authUserId) {
       throw new NotOwnerError();
     }
 
