@@ -1,0 +1,19 @@
+.profile-picture-label {
+  display: inline-block;
+  align-self: center;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 200px;
+  height: 200px;
+  background-image: url('./default-profile.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.profile-picture-field {
+  display: none;
+}
+
+.profile-picture-label.dragover {
+  border: 1px solid greenyellow;
+}

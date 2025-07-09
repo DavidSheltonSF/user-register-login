@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../styles/index.css" />
     <link rel="stylesheet" href="../styles/reset.css" />
     <link rel="stylesheet" href="../styles/form.css" />
+    <link rel="stylesheet" href="../styles/register.css" />
     <title>Register</title>
   </head>
   <body>
@@ -28,6 +29,17 @@
         <div const class="flex-container-center">
           <form id="register-form" action="">
             <div class="fields-wrapper">
+              <label class="profile-picture-label" for="picture-profile">
+                <input
+                  id="picture-profile"
+                  class="form-field profile-picture-field"
+                  placeholder="profile picture"
+                  type="file"
+                  name="profile_picture"
+                  accept="png jpeg"
+                />
+              </label>
+
               <input
                 class="form-field username-field"
                 placeholder="username"
@@ -62,19 +74,16 @@
                 name="birthday"
                 type="date"
               />
-              <input
-                class="form-field profile-picture-field"
-                placeholder="profile picture"
-                type="file"
-                name="profile_picture"
-                accept="png jpeg"
-              />
-              <button type="submit" class="form-btn form-register-btn">Register</button>
+
+              <button type="submit" class="form-btn form-register-btn">
+                Register
+              </button>
             </div>
           </form>
         </div>
       </section>
     </main>
     <script defer src="../src/register.js"></script>
+    <script defer src="../src/register-drag-drop-profile.js"></script>
   </body>
 </html>
