@@ -39,7 +39,7 @@ class UserController {
         email,
         phone,
         birthday,
-        profile_picture: file ? file.path : undefined,
+        profile_picture: file ? file.location : undefined,
       });
 
       return {
