@@ -3,21 +3,13 @@ const MysqlConnector = require('./helper/MysqlConnector');
 const MysqlMapper = require('./helper/MysqlMapper');
 
 describe('Testing UserRepository', () => {
-  async function makeConnectionSUT() {
-    const mysqlConnector = MysqlConnector.create();
-    mysqlConnector.connect();
-    const connection = mysqlConnector.getConnection();
+  const mysqlConnector = MysqlConnector.create();
+  mysqlConnector.connect();
 
-    if (!connection) {
-      throw new Error('Connection is null');
-    }
-
-    return connection;
-  }
+  const connection = mysqlConnector.getConnection();
 
   beforeEach(async () => {
     try {
-      const connection = await makeConnectionSUT();
       await connection.execute('TRUNCATE TABLE users');
     } catch (err) {
       console.log(err);
@@ -25,12 +17,10 @@ describe('Testing UserRepository', () => {
   });
 
   afterAll(async () => {
-    const connection = await makeConnectionSUT();
     connection.end();
   });
 
   test('Should add a new user in the database', async () => {
-    const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
     const user = {
@@ -56,7 +46,6 @@ describe('Testing UserRepository', () => {
   });
 
   test('Should find all users in the database', async () => {
-    const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
     const users = [
@@ -98,7 +87,6 @@ describe('Testing UserRepository', () => {
   });
 
   test('Should find a user by id', async () => {
-    const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
     const users = [
@@ -144,7 +132,6 @@ describe('Testing UserRepository', () => {
   });
 
   test('Should find a user by id', async () => {
-    const connection = await makeConnectionSUT();
     const userRepository = new UserRepository();
 
     const users = [
