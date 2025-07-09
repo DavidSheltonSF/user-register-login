@@ -29,30 +29,6 @@ describe('Testing profileRepository', () => {
     connection.end();
   });
 
-  test('Should add a new profile in the database', async () => {
-    const connection = await makeConnectionSUT();
-    const profileRepository = new ProfileRepository();
-
-    const profile = {
-      user_id: 1,
-      birthday: new Date('2002-02-26'),
-      profile_picture: 'https://path.com/daafsfda',
-    };
-
-    const createdProfile = await profileRepository.add(profile);
-
-    const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
-      createdProfile.id,
-    ]);
-
-    const [foundprofile] = result[0];
-
-    expect(createdProfile.id).toBeTruthy();
-    expect(foundprofile.user_id).toBe(profile.user_id);
-    expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
-    expect(foundprofile.profile_picture).toBe(profile.profile_picture);
-  });
-
   test('Should find all profiles in the database', async () => {
     const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
@@ -79,6 +55,31 @@ describe('Testing profileRepository', () => {
     `,
       [mappedProfiles]
     );
+
+    test('Should add a new profile in the database', async () => {
+      const connection = await makeConnectionSUT();
+      const profileRepository = new ProfileRepository();
+
+      const profile = {
+        user_id: 1,
+        birthday: new Date('2002-02-26'),
+        profile_picture: 'https://path.com/daafsfda',
+      };
+
+      const createdProfile = await profileRepository.add(profile);
+
+      const result = await connection.query(
+        'SELECT * FROM profiles WHERE id=?',
+        [createdProfile.id]
+      );
+
+      const [foundprofile] = result[0];
+
+      expect(createdProfile.id).toBeTruthy();
+      expect(foundprofile.user_id).toBe(profile.user_id);
+      expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
+      expect(foundprofile.profile_picture).toBe(profile.profile_picture);
+    });
 
     const result = await profileRepository.findAllprofiles();
 
