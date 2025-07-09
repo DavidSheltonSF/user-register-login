@@ -3,21 +3,13 @@ const MysqlHelper = require('./helper/MysqlHelper');
 const MysqlMapper = require('./helper/MysqlMapper');
 
 describe('Testing ProfileRepository', () => {
-  async function makeConnectionSUT() {
-    const mysqlHelper = MysqlHelper.create();
-    mysqlHelper.connect();
-    const connection = mysqlHelper.getConnection();
+  const mysqlHelper = MysqlHelper.create();
+  mysqlHelper.connect();
 
-    if (!connection) {
-      throw new Error('Connection is null');
-    }
-
-    return connection;
-  }
+  const connection = mysqlHelper.getConnection();
 
   beforeEach(async () => {
     try {
-      const connection = await makeConnectionSUT();
       await connection.execute('TRUNCATE TABLE profiles');
     } catch (err) {
       console.log(err);
@@ -25,12 +17,10 @@ describe('Testing ProfileRepository', () => {
   });
 
   afterAll(async () => {
-    const connection = await makeConnectionSUT();
     connection.end();
   });
 
   test('Should find all profiles in the database', async () => {
-    const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
     const profiles = [
@@ -70,7 +60,6 @@ describe('Testing ProfileRepository', () => {
   });
 
   test('Should add a new profile in the database', async () => {
-    const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
     const profile = {
@@ -94,7 +83,6 @@ describe('Testing ProfileRepository', () => {
   });
 
   test('Should find a profile by id', async () => {
-    const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
     const profiles = [
@@ -138,7 +126,6 @@ describe('Testing ProfileRepository', () => {
   });
 
   test('Should find a profile by user_id', async () => {
-    const connection = await makeConnectionSUT();
     const profileRepository = new ProfileRepository();
 
     const fakeUsers = [
