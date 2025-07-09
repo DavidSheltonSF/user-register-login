@@ -56,31 +56,6 @@ describe('Testing ProfileRepository', () => {
       [mappedProfiles]
     );
 
-    test('Should add a new profile in the database', async () => {
-      const connection = await makeConnectionSUT();
-      const profileRepository = new ProfileRepository();
-
-      const profile = {
-        user_id: 1,
-        birthday: new Date('2002-02-26'),
-        profile_picture: 'https://path.com/daafsfda',
-      };
-
-      const createdProfile = await profileRepository.add(profile);
-
-      const result = await connection.query(
-        'SELECT * FROM profiles WHERE id=?',
-        [createdProfile.id]
-      );
-
-      const [foundprofile] = result[0];
-
-      expect(createdProfile.id).toBeTruthy();
-      expect(foundprofile.user_id).toBe(profile.user_id);
-      expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
-      expect(foundprofile.profile_picture).toBe(profile.profile_picture);
-    });
-
     const result = await profileRepository.findAllprofiles();
 
     expect(result.length).toBe(profiles.length);
@@ -92,6 +67,30 @@ describe('Testing ProfileRepository', () => {
     expect(result[1].user_id).toBe(profiles[1].user_id);
     expect(result[1].birthday.getTime()).toBe(profiles[1].birthday.getTime());
     expect(result[1].profile_picture).toBe(profiles[1].profile_picture);
+  });
+
+  test('Should add a new profile in the database', async () => {
+    const connection = await makeConnectionSUT();
+    const profileRepository = new ProfileRepository();
+
+    const profile = {
+      user_id: 1,
+      birthday: new Date('2002-02-26'),
+      profile_picture: 'https://path.com/daafsfda',
+    };
+
+    const createdProfile = await profileRepository.add(profile);
+
+    const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
+      createdProfile.id,
+    ]);
+
+    const [foundprofile] = result[0];
+
+    expect(createdProfile.id).toBeTruthy();
+    expect(foundprofile.user_id).toBe(profile.user_id);
+    expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
+    expect(foundprofile.profile_picture).toBe(profile.profile_picture);
   });
 
   test('Should find a profile by id', async () => {
