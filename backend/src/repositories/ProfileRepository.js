@@ -1,10 +1,10 @@
 const MysqlConnector = require('./helper/MysqlConnector');
 
 class profileRepository {
-  databaseHandler = MysqlConnector.create();
+  databaseConnector = MysqlConnector.create();
 
   async findAllprofiles() {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const result = await connection.query('SELECT * FROM profiles');
 
@@ -12,7 +12,7 @@ class profileRepository {
   }
 
   async findprofileById(id) {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const [result] = await connection.query(
       'SELECT * FROM profiles WHERE id=?',
@@ -23,7 +23,7 @@ class profileRepository {
   }
 
   async findprofileByUserId(id) {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const [result] = await connection.query(
       'SELECT * FROM profiles WHERE user_id=?',
@@ -34,7 +34,7 @@ class profileRepository {
   }
 
   async add(profileData) {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const { user_id, birthday, profile_picture } = profileData;
 

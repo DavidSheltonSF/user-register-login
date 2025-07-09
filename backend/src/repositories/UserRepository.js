@@ -2,10 +2,10 @@ const MysqlConnector = require('./helper/MysqlConnector');
 
 
 class UserRepository {
-  databaseHandler = MysqlConnector.create();
+  databaseConnector = MysqlConnector.create();
 
   async findAllUsers() {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const result = await connection.query('SELECT * FROM users');
 
@@ -13,7 +13,7 @@ class UserRepository {
   }
 
   async findUserById(id) {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const [result] = await connection.query('SELECT * FROM users WHERE id=?', [
       id,
@@ -23,7 +23,7 @@ class UserRepository {
   }
 
   async findUserByEmail(email) {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const [result] = await connection.query('SELECT * FROM users WHERE email=?', [
       email,
@@ -33,7 +33,7 @@ class UserRepository {
   }
 
   async add(userData) {
-    const connection = this.databaseHandler.getConnection();
+    const connection = this.databaseConnector.getConnection();
 
     const { username, password, email, phone } = userData;
 
