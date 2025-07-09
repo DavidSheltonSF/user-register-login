@@ -2,13 +2,13 @@ const mysql = require('mysql2/promise');
 const dotenv = require('dotenv');
 dotenv.config();
 
-class MysqlHelper {
+class MysqlConnector {
   static instance = null;
   connection = null;
 
   static create() {
     if (!this.instance) {
-      this.instance = new MysqlHelper();
+      this.instance = new MysqlConnector();
     }
 
     return this.instance;
@@ -35,4 +35,4 @@ class MysqlHelper {
   }
 }
 
-module.exports = MysqlHelper;
+module.exports = MysqlConnector;

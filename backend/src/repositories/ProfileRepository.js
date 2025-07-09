@@ -1,7 +1,7 @@
-const MysqlHelper = require('./helper/MysqlHelper');
+const MysqlConnector = require('./helper/MysqlConnector');
 
 class profileRepository {
-  databaseHandler = MysqlHelper.create();
+  databaseHandler = MysqlConnector.create();
 
   async findAllprofiles() {
     const connection = this.databaseHandler.getConnection();

@@ -1,12 +1,12 @@
 const UserRepository = require('./UserRepository');
-const MysqlHelper = require('./helper/MysqlHelper');
+const MysqlConnector = require('./helper/MysqlConnector');
 const MysqlMapper = require('./helper/MysqlMapper');
 
 describe('Testing UserRepository', () => {
   async function makeConnectionSUT() {
-    const mysqlHelper = MysqlHelper.create();
-    mysqlHelper.connect();
-    const connection = mysqlHelper.getConnection();
+    const mysqlConnector = MysqlConnector.create();
+    mysqlConnector.connect();
+    const connection = mysqlConnector.getConnection();
 
     if (!connection) {
       throw new Error('Connection is null');

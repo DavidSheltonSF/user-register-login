@@ -1,9 +1,9 @@
 const ProfileRepository = require('./ProfileRepository');
-const MysqlHelper = require('./helper/MysqlHelper');
+const MysqlConnector = require('./helper/MysqlConnector');
 const MysqlMapper = require('./helper/MysqlMapper');
 
 describe('Testing ProfileRepository', () => {
-  const mysqlHelper = MysqlHelper.create();
+  const mysqlHelper = MysqlConnector.create();
   mysqlHelper.connect();
 
   const connection = mysqlHelper.getConnection();
