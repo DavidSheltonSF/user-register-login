@@ -1,6 +1,6 @@
 const MysqlConnector = require('./helper/MysqlConnector');
 
-class profileRepository {
+class ProfileRepository {
   connection = MysqlConnector.getInstance().getConnection();
 
   async findAllprofiles() {
@@ -58,4 +58,4 @@ class profileRepository {
   }
 }
 
-module.exports = profileRepository;
+module.exports = ProfileRepository;
