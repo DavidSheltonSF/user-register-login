@@ -1,6 +1,6 @@
 const ProfileRepository = require('./ProfileRepository');
 const MysqlConnector = require('./helper/MysqlConnector');
-const MysqlMapper = require('./helper/MysqlMapper');
+const objectsToValuesArrays = require('./helper/objectsToValuesArrays');
 
 describe('Testing ProfileRepository', () => {
   const mysqlHelper = MysqlConnector.create();
@@ -36,7 +36,7 @@ describe('Testing ProfileRepository', () => {
       },
     ];
 
-    const mappedProfiles = MysqlMapper.mapProfiles(profiles);
+    const mappedProfiles = objectsToValuesArrays(profiles);
 
     // Add user profiles
     await connection.query(
@@ -98,7 +98,7 @@ describe('Testing ProfileRepository', () => {
       },
     ];
 
-    const mappedProfiles = MysqlMapper.mapProfiles(profiles);
+    const mappedProfiles = objectsToValuesArrays(profiles);
 
     // Add user profiles
     const [results] = await connection.query(
@@ -156,8 +156,8 @@ describe('Testing ProfileRepository', () => {
       },
     ];
 
-    const mappedFakeUsers = MysqlMapper.mapUsers(fakeUsers);
-    const mappedProfiles = MysqlMapper.mapProfiles(profiles);
+    const mappedFakeUsers = objectsToValuesArrays(fakeUsers);
+    const mappedProfiles = objectsToValuesArrays(profiles);
 
     // Add fake users first
     await connection.query(
