@@ -3,7 +3,7 @@ const MysqlConnector = require('./helper/MysqlConnector');
 const objectsToValuesArrays = require('./helper/objectsToValuesArrays');
 
 describe('Testing UserRepository', () => {
-  const mysqlConnector = MysqlConnector.create();
+  const mysqlConnector = MysqlConnector.getInstance();
 
   const connection = mysqlConnector.getConnection();
 

@@ -6,7 +6,7 @@ class MysqlConnector {
   static instance = null;
   connection = null;
 
-  static create() {
+  static getInstance() {
     if (!this.instance) {
       this.instance = new MysqlConnector();
       this.instance.connect();

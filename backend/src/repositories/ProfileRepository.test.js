@@ -3,7 +3,7 @@ const MysqlConnector = require('./helper/MysqlConnector');
 const objectsToValuesArrays = require('./helper/objectsToValuesArrays');
 
 describe('Testing ProfileRepository', () => {
-  const mysqlHelper = MysqlConnector.create();
+  const mysqlHelper = MysqlConnector.getInstance();
   const connection = mysqlHelper.getConnection();
 
   beforeEach(async () => {
