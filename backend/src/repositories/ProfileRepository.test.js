@@ -4,8 +4,6 @@ const objectsToValuesArrays = require('./helper/objectsToValuesArrays');
 
 describe('Testing ProfileRepository', () => {
   const mysqlHelper = MysqlConnector.create();
-  mysqlHelper.connect();
-
   const connection = mysqlHelper.getConnection();
 
   beforeEach(async () => {

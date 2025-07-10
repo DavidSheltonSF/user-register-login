@@ -9,6 +9,7 @@ class MysqlConnector {
   static create() {
     if (!this.instance) {
       this.instance = new MysqlConnector();
+      this.instance.connect();
     }
 
     return this.instance;
