@@ -5,7 +5,6 @@ class ProfileRepository {
 
   async findAllprofiles() {
     const result = await this.connection.query('SELECT * FROM profiles');
-
     return result[0];
   }
 
@@ -14,7 +13,6 @@ class ProfileRepository {
       'SELECT * FROM profiles WHERE id=?',
       [id]
     );
-
     return result[0];
   }
 
@@ -23,7 +21,6 @@ class ProfileRepository {
       'SELECT * FROM profiles WHERE user_id=?',
       [id]
     );
-
     return result[0];
   }
 
