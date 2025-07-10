@@ -27,7 +27,6 @@ class ProfileRepository {
   async add(profileData) {
     const { user_id, birthday, profile_picture } = profileData;
 
-    let profileId = undefined;
     const [result] = await this.connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES (?, ?, ?)
@@ -35,7 +34,7 @@ class ProfileRepository {
       [user_id, birthday, profile_picture]
     );
 
-    profileId = await result.insertId;
+    const profileId = await result.insertId;
 
     const response = await this.connection.query(
       'SELECT * FROM profiles WHERE id=?',
