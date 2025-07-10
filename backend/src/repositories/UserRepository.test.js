@@ -1,6 +1,6 @@
 const UserRepository = require('./UserRepository');
 const MysqlConnector = require('./helper/MysqlConnector');
-const MysqlMapper = require('./helper/MysqlMapper');
+const objectsToValuesArrays = require('./helper/objectsToValuesArrays');
 
 describe('Testing UserRepository', () => {
   const mysqlConnector = MysqlConnector.create();
@@ -63,7 +63,7 @@ describe('Testing UserRepository', () => {
       },
     ];
 
-    const mappedusers = MysqlMapper.mapUsers(users);
+    const mappedusers = objectsToValuesArrays(users);
 
     // Add user users
     await connection.query(
@@ -104,7 +104,7 @@ describe('Testing UserRepository', () => {
       },
     ];
 
-    const mappedusers = MysqlMapper.mapUsers(users);
+    const mappedusers = objectsToValuesArrays(users);
 
     // Add user users
     const [results] = await connection.query(
@@ -149,7 +149,7 @@ describe('Testing UserRepository', () => {
       },
     ];
 
-    const mappedusers = MysqlMapper.mapUsers(users);
+    const mappedusers = objectsToValuesArrays(users);
 
     // Add user users
     await connection.query(
