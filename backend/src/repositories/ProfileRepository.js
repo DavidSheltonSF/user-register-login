@@ -1,20 +1,16 @@
 const MysqlConnector = require('./helper/MysqlConnector');
 
 class profileRepository {
-  databaseConnector = MysqlConnector.getInstance();
+  connection = MysqlConnector.getInstance().getConnection();
 
   async findAllprofiles() {
-    const connection = this.databaseConnector.getConnection();
-
-    const result = await connection.query('SELECT * FROM profiles');
+    const result = await this.connection.query('SELECT * FROM profiles');
 
     return result[0];
   }
 
   async findprofileById(id) {
-    const connection = this.databaseConnector.getConnection();
-
-    const [result] = await connection.query(
+    const [result] = await this.connection.query(
       'SELECT * FROM profiles WHERE id=?',
       [id]
     );
@@ -23,9 +19,7 @@ class profileRepository {
   }
 
   async findprofileByUserId(id) {
-    const connection = this.databaseConnector.getConnection();
-
-    const [result] = await connection.query(
+    const [result] = await this.connection.query(
       'SELECT * FROM profiles WHERE user_id=?',
       [id]
     );
@@ -34,12 +28,10 @@ class profileRepository {
   }
 
   async add(profileData) {
-    const connection = this.databaseConnector.getConnection();
-
     const { user_id, birthday, profile_picture } = profileData;
 
     let profileId = undefined;
-    const [result] = await connection.query(
+    const [result] = await this.connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES (?, ?, ?)
     `,
@@ -48,7 +40,7 @@ class profileRepository {
 
     profileId = await result.insertId;
 
-    const response = await connection.query(
+    const response = await this.connection.query(
       'SELECT * FROM profiles WHERE id=?',
       [profileId]
     );
