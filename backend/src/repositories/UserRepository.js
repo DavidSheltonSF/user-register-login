@@ -1,20 +1,16 @@
 const MysqlConnector = require('./helper/MysqlConnector');
 
 class UserRepository {
-  databaseConnector = MysqlConnector.getInstance();
+  connection = MysqlConnector.getInstance().getConnection();
 
   async findAllUsers() {
-    const connection = this.databaseConnector.getConnection();
-
-    const result = await connection.query('SELECT * FROM users');
+    const result = await this.connection.query('SELECT * FROM users');
 
     return result[0];
   }
 
   async findUserById(id) {
-    const connection = this.databaseConnector.getConnection();
-
-    const [result] = await connection.query('SELECT * FROM users WHERE id=?', [
+    const [result] = await this.connection.query('SELECT * FROM users WHERE id=?', [
       id,
     ]);
 
@@ -22,9 +18,7 @@ class UserRepository {
   }
 
   async findUserByEmail(email) {
-    const connection = this.databaseConnector.getConnection();
-
-    const [result] = await connection.query(
+    const [result] = await this.connection.query(
       'SELECT * FROM users WHERE email=?',
       [email]
     );
@@ -33,12 +27,10 @@ class UserRepository {
   }
 
   async add(userData) {
-    const connection = this.databaseConnector.getConnection();
-
     const { username, password, email, phone } = userData;
 
     let userId = undefined;
-    const [result] = await connection.query(
+    const [result] = await this.connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES (?, ?, ?, ?)
     `,
@@ -47,7 +39,7 @@ class UserRepository {
 
     userId = await result.insertId;
 
-    const response = await connection.query('SELECT * FROM users WHERE id=?', [
+    const response = await this.connection.query('SELECT * FROM users WHERE id=?', [
       userId,
     ]);
 
