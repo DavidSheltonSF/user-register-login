@@ -36,16 +36,16 @@ class ProfileRepository {
 
     const profileId = await result.insertId;
 
-    const response = await this.connection.query(
+    const [response] = await this.connection.query(
       'SELECT * FROM profiles WHERE id=?',
       [profileId]
     );
 
-    if (response[0].length === 0) {
+    if (response.length === 0) {
       return null;
     }
 
-    const [foundprofile] = response[0];
+    const [foundprofile] = response;
 
     return {
       id: profileId,
