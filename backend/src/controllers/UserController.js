@@ -4,8 +4,8 @@ const UserService = require('../services/UserService');
 class UserController {
   service = new UserService();
 
-  async create(httpRequest) {
-    const { body } = httpRequest;
+  async create(request) {
+    const { body } = request;
 
     if (!body) {
       return {
@@ -17,7 +17,7 @@ class UserController {
 
     try {
 
-      const file = httpRequest.file
+      const file = request.file
 
       const { username, password, email, phone, birthday } =
         body;
@@ -55,10 +55,10 @@ class UserController {
     }
   }
 
-  async findById(httpRequest) {
+  async findById(request) {
     try {
-      const { id } = httpRequest.params;
-      const { authUser } = httpRequest;
+      const { id } = request.params;
+      const { authUser } = request;
 
       if (!authUser) {
         return {
@@ -108,8 +108,8 @@ class UserController {
     }
   }
 
-  async findByEmail(httpRequest) {
-    const { email } = httpRequest.body;
+  async findByEmail(request) {
+    const { email } = request.body;
 
     if (!email) {
       return {
