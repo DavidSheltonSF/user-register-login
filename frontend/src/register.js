@@ -20,30 +20,22 @@ registerForm.addEventListener('submit', async (e) => {
     });
     console.log(response);
 
-    if(response.status < 500){
-      const data = await response.json();
-      console.log(data);
-    }
-    
-    if(response.status < 400){
-      alert('User registred succesfuly!');
-      console.log('User registred succesfuly!');
-      usernameField.value = '';
-      passwordField.value = '';
-      emailField.value = '';
-      phoneField.value = '';
-      birthdayField.value = '';
-      profilePictureField.value = '';
+    const data = await response.json();
+    console.log(data);
+
+    if (response.status >= 400) {
+      alert(data.error);
+      return;
     }
 
-    else if (response.status < 500) {
-      alert(data.message);
-      console.log(data.message);
-    } 
-    else {
-      alert('Server Error')
-    }
-
+    alert('User registred succesfuly!');
+    console.log('User registred succesfuly!');
+    usernameField.value = '';
+    passwordField.value = '';
+    emailField.value = '';
+    phoneField.value = '';
+    birthdayField.value = '';
+    profilePictureField.value = '';
   } catch (err) {
     console.log('error!!!!');
     console.log(err);
