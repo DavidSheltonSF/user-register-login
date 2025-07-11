@@ -109,8 +109,6 @@ describe('Testing UserController', () => {
     await controller.create(fakeRequest);
     const response = await controller.create(fakeRequest);
 
-    console.log(response)
-
     expect(response.status).toBe(unprocessableEntity().status);
   });
 });
