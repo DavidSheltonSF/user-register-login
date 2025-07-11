@@ -13,7 +13,7 @@ class UserService {
 
     const hashedPassword = await BcryptHelper.hashPassword(password);
 
-    const existingUser = await this.userRepository.findUserByEmail(email);
+    const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser && existingUser.email === email) {
       throw new DuplicatedEmailError(email);
@@ -47,15 +47,13 @@ class UserService {
       throw new NotOwnerError();
     }
 
-    const user = await this.userRepository.findUserById(id);
+    const user = await this.userRepository.findById(id);
 
     if (!user) {
       return null;
     }
 
-    const userProfile = await this.profileRepository.findprofileByUserId(
-      user.id
-    );
+    const userProfile = await this.profileRepository.findByUserId(user.id);
     return {
       ...user,
       profile: userProfile,
@@ -63,15 +61,13 @@ class UserService {
   }
 
   async findByEmail(email) {
-    const user = await this.userRepository.findUserByEmail(email);
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       return null;
     }
 
-    const userProfile = await this.profileRepository.findprofileByUserId(
-      user.id
-    );
+    const userProfile = await this.profileRepository.findByUserId(user.id);
 
     return {
       ...user,
