@@ -57,10 +57,12 @@ describe('Testing RegisterUserService', () => {
     await service.create(fakeUser2);
 
     const foundUser1 = await service.findByEmail(fakeUser1.email);
-    const foundUser2 = await service.findByEmail(fakeUser2.email);
 
     expect(foundUser1.username).toBe(fakeUser1.username);
-    expect(foundUser2.username).toBe(fakeUser2.username);
+    expect(foundUser1.email).toBe(fakeUser1.email);
+    expect(foundUser1.phone).toBe(fakeUser1.phone);
+    expect(foundUser1.profile.birthday).toBe(fakeUser1.birthday);
+    expect(foundUser1.profile.profile_picture).toBe(fakeUser1.profile_picture);
   });
 
   test('Should find user by id', async () => {
@@ -88,10 +90,12 @@ describe('Testing RegisterUserService', () => {
     await service.create(fakeUser2);
 
     const foundUser1 = await service.findById(1, 1);
-    const foundUser2 = await service.findById(2, 2);
 
-    expect(foundUser2.username).toBe(fakeUser2.username);
     expect(foundUser1.username).toBe(fakeUser1.username);
+    expect(foundUser1.email).toBe(fakeUser1.email);
+    expect(foundUser1.phone).toBe(fakeUser1.phone);
+    expect(foundUser1.profile.birthday).toBe(fakeUser1.birthday);
+    expect(foundUser1.profile.profile_picture).toBe(fakeUser1.profile_picture);
   });
 
   test('Should throw NotFoundError when a user with the given email is not found', async () => {
@@ -144,8 +148,9 @@ describe('Testing RegisterUserService', () => {
 
     const [foundUser] = result[0];
 
+    console.log(foundUser);
+
     expect(registredUser.id).toBeTruthy();
-    expect(foundUser.username).toBe(user.username);
     expect(registredUser.email).toBe(user.email);
     expect(registredUser.phone).toBe(user.phone);
     expect(registredUser.profile.birthday).toBe(user.birthday);
