@@ -19,31 +19,6 @@ describe('Testing UserRepository', () => {
     connection.end();
   });
 
-  test('Should create a new user in the database', async () => {
-    const userRepository = new UserRepository();
-
-    const user = {
-      username: 'Jeronimo',
-      password: 'jero123',
-      email: 'jeronimo@bugmail.com',
-      phone: '21585478565',
-    };
-
-    const createduser = await userRepository.create(user);
-
-    const result = await connection.query('SELECT * FROM users WHERE id=?', [
-      createduser.id,
-    ]);
-
-    const [founduser] = result[0];
-
-    expect(createduser.id).toBeTruthy();
-    expect(founduser.username).toBe(user.username);
-    expect(founduser.password).toBe(user.password);
-    expect(founduser.email).toBe(user.email);
-    expect(founduser.phone).toBe(user.phone);
-  });
-
   test('Should find all users in the database', async () => {
     const userRepository = new UserRepository();
 
@@ -170,5 +145,30 @@ describe('Testing UserRepository', () => {
     expect(founduser2.password).toBe(users[1].password);
     expect(founduser2.email).toBe(users[1].email);
     expect(founduser2.phone).toBe(users[1].phone);
+  });
+
+  test('Should create a new user in the database', async () => {
+    const userRepository = new UserRepository();
+
+    const user = {
+      username: 'Jeronimo',
+      password: 'jero123',
+      email: 'jeronimo@bugmail.com',
+      phone: '21585478565',
+    };
+
+    const createduser = await userRepository.create(user);
+
+    const result = await connection.query('SELECT * FROM users WHERE id=?', [
+      createduser.id,
+    ]);
+
+    const [founduser] = result[0];
+
+    expect(createduser.id).toBeTruthy();
+    expect(founduser.username).toBe(user.username);
+    expect(founduser.password).toBe(user.password);
+    expect(founduser.email).toBe(user.email);
+    expect(founduser.phone).toBe(user.phone);
   });
 });
