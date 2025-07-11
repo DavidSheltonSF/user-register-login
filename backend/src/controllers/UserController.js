@@ -85,13 +85,13 @@ class UserController {
   }
 
   async create(request) {
-    const { body } = request;
-
-    if (!body) {
-      return badRequest('Missing body request');
-    }
-
     try {
+      const { body } = request;
+
+      if (!body) {
+        return badRequest('Missing body request');
+      }
+      
       const file = request.file;
 
       const { username, password, email, phone, birthday } = body;
