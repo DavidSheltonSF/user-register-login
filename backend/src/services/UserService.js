@@ -27,9 +27,10 @@ class UserService {
         phone,
       });
 
+      const birthdayDate = new Date(birthday)
       const createdProfile = await this.profileRepository.create({
         user_id: registredUser.id,
-        birthday,
+        birthday: birthdayDate,
         profile_picture,
       });
 
