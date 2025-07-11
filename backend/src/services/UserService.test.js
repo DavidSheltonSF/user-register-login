@@ -96,7 +96,9 @@ describe('Testing RegisterUserService', () => {
 
   test('Should throw NotFoundError when a user with the given email is not found', async () => {
     const service = new UserService();
-    expect(service.findByEmail('notfound@bugmail.com')).rejects.toThrow(NotFoundError);
+    expect(service.findByEmail('notfound@bugmail.com')).rejects.toThrow(
+      NotFoundError
+    );
   });
 
   test('Should throw NotOwnerError when the authenticated user ID does not match the requested ID', async () => {
