@@ -1,6 +1,7 @@
 const UserService = require('./UserService');
 const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
+const BcryptHelper = require('./helpers/BcryptHelper')
 
 describe('Testing RegisterUserService', () => {
   async function makeConnectionSUT() {
@@ -52,7 +53,7 @@ describe('Testing RegisterUserService', () => {
 
     expect(registredUser.id).toBeTruthy();
     expect(foundUser.username).toBe(fakeUser.username);
-    expect(foundUser.password).toBe(fakeUser.password);
+    expect(BcryptHelper.compare(fakeUser.password, foundUser.password)).toBeTruthy();
     expect(foundUser.email).toBe(fakeUser.email);
     expect(foundUser.phone).toBe(fakeUser.phone);
   });
