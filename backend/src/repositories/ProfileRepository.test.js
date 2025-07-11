@@ -116,11 +116,15 @@ describe('Testing ProfileRepository', () => {
     expect(foundProfile1.birthday.getTime()).toBe(
       profiles[0].birthday.getTime()
     );
+    expect(foundProfile1.profile_picture).toBe(profiles[0].profile_picture);
+
 
     expect(foundProfile2.user_id).toBe(profiles[1].user_id);
     expect(foundProfile2.birthday.getTime()).toBe(
       profiles[1].birthday.getTime()
     );
+    expect(foundProfile2.profile_picture).toBe(profiles[1].profile_picture);
+
   });
 
   test('Should find a profile by user_id', async () => {
