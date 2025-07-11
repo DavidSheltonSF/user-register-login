@@ -54,7 +54,7 @@ class UserService {
 
     const hashedPassword = await BcryptHelper.hashPassword(password);
 
-    const registredUser = await this.userRepository.create({
+    const createdUser = await this.userRepository.create({
       username,
       password: hashedPassword,
       email,
@@ -63,13 +63,13 @@ class UserService {
 
     const birthdayDate = new Date(birthday);
     const createdProfile = await this.profileRepository.create({
-      user_id: registredUser.id,
+      user_id: createdUser.id,
       birthday: birthdayDate,
       profile_picture,
     });
 
     return {
-      ...registredUser,
+      ...createdUser,
       profile: createdProfile,
     };
   }
