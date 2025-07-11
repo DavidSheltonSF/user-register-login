@@ -6,6 +6,7 @@ function serializeUser(data) {
     username: data.username,
     email: data.email,
     phone: data.phone,
+    created_at: formatDateToIso(data.created_at),
   };
   return serializedData;
 }
