@@ -1,5 +1,16 @@
+const DuplicatedEmailError = require('../services/errors/DuplicatedEmailError');
+const NotFoundError = require('../services/errors/NotFoundError');
 const NotOwnerError = require('../services/errors/NotOwnerError');
 const UserService = require('../services/UserService');
+const getMissingRequiredFields = require('./helpers/getMissingRequiredFields');
+const {
+  badRequest,
+  ok,
+  unprocessableEntity,
+  notFound,
+  forbidden,
+  serverError,
+} = require('./http/http-helpers');
 
 class UserController {
   service = new UserService();
@@ -8,31 +19,27 @@ class UserController {
     const { body } = request;
 
     if (!body) {
-      return {
-        status: 400,
-        error: 'MissingFieldsError',
-        message: 'Body is missing in request',
-      };
+      return badRequest('Missing body request');
     }
 
     try {
+      const file = request.file;
 
-      const file = request.file
-
-      const { username, password, email, phone, birthday } =
-        body;
+      const { username, password, email, phone, birthday } = body;
 
       const requiredFields = ['username', 'password', 'email'];
 
-      for (let i = 0; i < requiredFields.length; i++) {
-        if (!Object.keys(body).includes(requiredFields[i])) {
-          return {
-            status: 400,
-            message: 'One or more required fields are missing in body request',
-          };
-        }
+      const missingRequiredFields = getMissingRequiredFields(
+        body,
+        requiredFields
+      );
+
+      if (missingRequiredFields.length > 0) {
+        return badRequest(
+          `Missing required params: ${[missingRequiredFields]}`
+        );
       }
-      
+
       const response = await this.service.create({
         username,
         password,
@@ -42,16 +49,23 @@ class UserController {
         profile_picture: file ? file.location : undefined,
       });
 
-      return {
-        status: 200,
-        body: response,
-      };
-    } catch (err) {
-      return {
-        status: 400,
-        error: err.name,
-        message: err.message,
-      };
+      return ok(response);
+    } catch (error) {
+      if (error instanceof DuplicatedEmailError) {
+        return unprocessableEntity(
+          `A user is already associated with the email ${email}.`
+        );
+      }
+
+      if (error instanceof NotFoundError) {
+        return notFound(`User not found`);
+      }
+
+      if (error instanceof NotOwnerError) {
+        return forbidden(`User does not own the requested resource.`);
+      }
+
+      return serverError();
     }
   }
 
