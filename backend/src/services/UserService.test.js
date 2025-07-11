@@ -1,7 +1,7 @@
 const UserService = require('./UserService');
 const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
-const BcryptHelper = require('./helpers/BcryptHelper')
+const BcryptHelper = require('./helpers/BcryptHelper');
 
 describe('Testing RegisterUserService', () => {
   async function makeConnectionSUT() {
@@ -34,7 +34,7 @@ describe('Testing RegisterUserService', () => {
     const connection = await makeConnectionSUT();
     const service = new UserService();
 
-    const fakeUser = {
+    const user = {
       username: 'TesterFirst',
       password: 'test123',
       email: 'test@bugmail.com',
@@ -43,7 +43,7 @@ describe('Testing RegisterUserService', () => {
       profile_picture: 'https://path.com',
     };
 
-    const registredUser = await service.create(fakeUser);
+    const registredUser = await service.create(user);
 
     const result = await connection.query('SELECT * FROM users WHERE id=?', [
       registredUser.id,
@@ -52,10 +52,23 @@ describe('Testing RegisterUserService', () => {
     const [foundUser] = result[0];
 
     expect(registredUser.id).toBeTruthy();
-    expect(foundUser.username).toBe(fakeUser.username);
-    expect(BcryptHelper.compare(fakeUser.password, foundUser.password)).toBeTruthy();
-    expect(foundUser.email).toBe(fakeUser.email);
-    expect(foundUser.phone).toBe(fakeUser.phone);
+    expect(foundUser.username).toBe(user.username);
+    expect(
+      BcryptHelper.compare(user.password, registredUser.password)
+    ).toBeTruthy();
+    expect(registredUser.email).toBe(user.email);
+    expect(registredUser.phone).toBe(user.phone);
+    expect(registredUser.profile.birthday.getTime()).toBe(
+      new Date(user.birthday).getTime()
+    );
+    expect(registredUser.profile.profile_picture).toBe(user.profile_picture);
+
+    expect(foundUser.username).toBe(user.username);
+    expect(
+      BcryptHelper.compare(user.password, foundUser.password)
+    ).toBeTruthy();
+    expect(foundUser.email).toBe(user.email);
+    expect(foundUser.phone).toBe(user.phone);
   });
 
   test('Should  not register a user with duplicated email in the database', async () => {
@@ -140,8 +153,8 @@ describe('Testing RegisterUserService', () => {
     await service.create(fakeUser1);
     await service.create(fakeUser2);
 
-    const foundUser1 = await service.findById(1);
-    const foundUser2 = await service.findById(2);
+    const foundUser1 = await service.findById(1, 1);
+    const foundUser2 = await service.findById(2, 2);
 
     expect(foundUser2.username).toBe(fakeUser2.username);
     expect(foundUser1.username).toBe(fakeUser1.username);
