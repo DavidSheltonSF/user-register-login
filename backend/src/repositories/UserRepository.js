@@ -26,7 +26,6 @@ class UserRepository {
   async create(userData) {
     const { username, password, email, phone } = userData;
 
-    let userId = undefined;
     const [result] = await this.connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES (?, ?, ?, ?)
@@ -34,7 +33,7 @@ class UserRepository {
       [username, password, email, phone]
     );
 
-    userId = await result.insertId;
+    const userId = await result.insertId;
 
     const response = await this.connection.query('SELECT * FROM users WHERE id=?', [
       userId,
