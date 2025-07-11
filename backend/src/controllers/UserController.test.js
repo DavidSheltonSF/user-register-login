@@ -19,35 +19,6 @@ describe('Testing UserController', () => {
     connection.end();
   });
 
-  test('Should create a new user in the database', async () => {
-    const controller = new UserController();
-
-    const fakeRequest = {
-      file: {
-        location: 'https://path.com',
-      },
-      body: {
-        username: 'TesterFirst',
-        password: 'test123',
-        email: 'test@bugmail.com',
-        phone: '215858484',
-        birthday: '1988-05-21',
-      },
-    };
-
-    const response = await controller.create(fakeRequest);
-
-    const data = response?.data;
-
-    const bodyRequest = fakeRequest.body;
-
-    expect(response.status).toBe(200);
-    expect(data).toBeTruthy();
-    expect(bodyRequest.username).toBe(data.username);
-    expect(bodyRequest.email).toBe(data.email);
-    expect(bodyRequest.phone).toBe(data.phone);
-    expect(fakeRequest.file.location).toBe(data.profile.profile_picture);
-  });
   test('Should find user by id', async () => {
     const controller = new UserController();
 
@@ -86,5 +57,35 @@ describe('Testing UserController', () => {
     expect(data.profile.profile_picture).toBe(
       fakeRequest.file.location
     );
+  });
+
+  test('Should create a new user in the database', async () => {
+    const controller = new UserController();
+
+    const fakeRequest = {
+      file: {
+        location: 'https://path.com',
+      },
+      body: {
+        username: 'TesterFirst',
+        password: 'test123',
+        email: 'test@bugmail.com',
+        phone: '215858484',
+        birthday: '1988-05-21',
+      },
+    };
+
+    const response = await controller.create(fakeRequest);
+
+    const data = response?.data;
+
+    const bodyRequest = fakeRequest.body;
+
+    expect(response.status).toBe(200);
+    expect(data).toBeTruthy();
+    expect(bodyRequest.username).toBe(data.username);
+    expect(bodyRequest.email).toBe(data.email);
+    expect(bodyRequest.phone).toBe(data.phone);
+    expect(fakeRequest.file.location).toBe(data.profile.profile_picture);
   });
 });
