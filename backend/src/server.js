@@ -1,5 +1,5 @@
 const express = require('express');
-const MysqlHelper = require('./repositories/helper/MysqlHelper');
+const MysqlConnector = require('./repositories/helper/MysqlConnector');
 const register = require('./routes/register');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -23,8 +23,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 (async () => {
-  const mysqlHelper = MysqlHelper.create();
-  await mysqlHelper.connect();
+  const mysqlConnector = MysqlConnector.getInstance();
+  await mysqlConnector.connect();
 
   app.get('/', (req, res) => {
     res.send('Eae bro? Bora finalizar esse projeto?');
