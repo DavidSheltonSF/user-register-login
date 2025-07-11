@@ -30,6 +30,68 @@ describe('Testing RegisterUserService', () => {
     connection.end();
   });
 
+  test('Should find user by email', async () => {
+    const service = new UserService();
+
+    const fakeUser1 = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
+
+    const fakeUser2 = {
+      username: 'UserFakeon',
+      password: 'test123',
+      email: 'junior@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com/feaf',
+    };
+
+    await service.create(fakeUser1);
+    await service.create(fakeUser2);
+
+    const foundUser1 = await service.findByEmail(fakeUser1.email);
+    const foundUser2 = await service.findByEmail(fakeUser2.email);
+
+    expect(foundUser1.username).toBe(fakeUser1.username);
+    expect(foundUser2.username).toBe(fakeUser2.username);
+  });
+
+  test('Should find user by id', async () => {
+    const service = new UserService();
+
+    const fakeUser1 = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
+
+    const fakeUser2 = {
+      username: 'UserFakeon',
+      password: 'test123',
+      email: 'junior@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com/feaf',
+    };
+
+    await service.create(fakeUser1);
+    await service.create(fakeUser2);
+
+    const foundUser1 = await service.findById(1, 1);
+    const foundUser2 = await service.findById(2, 2);
+
+    expect(foundUser2.username).toBe(fakeUser2.username);
+    expect(foundUser1.username).toBe(fakeUser1.username);
+  });
+
   test('Should create a new user in the database', async () => {
     const connection = await makeConnectionSUT();
     const service = new UserService();
@@ -98,65 +160,5 @@ describe('Testing RegisterUserService', () => {
     );
   });
 
-  test('Should find user by email', async () => {
-    const service = new UserService();
-
-    const fakeUser1 = {
-      username: 'TesterFirst',
-      password: 'test123',
-      email: 'test@bugmail.com',
-      phone: '215858484',
-      birthday: '1988-05-21',
-      profile_picture: 'https://path.com',
-    };
-
-    const fakeUser2 = {
-      username: 'UserFakeon',
-      password: 'test123',
-      email: 'junior@bugmail.com',
-      phone: '215858484',
-      birthday: '1988-05-21',
-      profile_picture: 'https://path.com/feaf',
-    };
-
-    await service.create(fakeUser1);
-    await service.create(fakeUser2);
-
-    const foundUser1 = await service.findByEmail(fakeUser1.email);
-    const foundUser2 = await service.findByEmail(fakeUser2.email);
-
-    expect(foundUser1.username).toBe(fakeUser1.username);
-    expect(foundUser2.username).toBe(fakeUser2.username);
-  });
-
-  test('Should find user by id', async () => {
-    const service = new UserService();
-
-    const fakeUser1 = {
-      username: 'TesterFirst',
-      password: 'test123',
-      email: 'test@bugmail.com',
-      phone: '215858484',
-      birthday: '1988-05-21',
-      profile_picture: 'https://path.com',
-    };
-
-    const fakeUser2 = {
-      username: 'UserFakeon',
-      password: 'test123',
-      email: 'junior@bugmail.com',
-      phone: '215858484',
-      birthday: '1988-05-21',
-      profile_picture: 'https://path.com/feaf',
-    };
-
-    await service.create(fakeUser1);
-    await service.create(fakeUser2);
-
-    const foundUser1 = await service.findById(1, 1);
-    const foundUser2 = await service.findById(2, 2);
-
-    expect(foundUser2.username).toBe(fakeUser2.username);
-    expect(foundUser1.username).toBe(fakeUser1.username);
-  });
+  
 });

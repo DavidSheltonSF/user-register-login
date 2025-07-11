@@ -7,41 +7,6 @@ const BcryptHelper = require('./helpers/BcryptHelper');
 class UserService {
   userRepository = new UserRepository();
   profileRepository = new ProfileRepository();
-  async create(userData) {
-    const { username, password, email, phone, birthday, profile_picture } =
-      userData;
-
-    const hashedPassword = await BcryptHelper.hashPassword(password);
-
-    const existingUser = await this.userRepository.findByEmail(email);
-
-    if (existingUser && existingUser.email === email) {
-      throw new DuplicatedEmailError(email);
-    }
-
-    try {
-      const registredUser = await this.userRepository.create({
-        username,
-        password: hashedPassword,
-        email,
-        phone,
-      });
-
-      const birthdayDate = new Date(birthday)
-      const createdProfile = await this.profileRepository.create({
-        user_id: registredUser.id,
-        birthday: birthdayDate,
-        profile_picture,
-      });
-
-      return {
-        ...registredUser,
-        profile: createdProfile,
-      };
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   async findById(id, authUserId) {
     if (id !== authUserId) {
@@ -74,6 +39,41 @@ class UserService {
       ...user,
       userProfile,
     };
+  }
+  async create(userData) {
+    const { username, password, email, phone, birthday, profile_picture } =
+      userData;
+
+    const hashedPassword = await BcryptHelper.hashPassword(password);
+
+    const existingUser = await this.userRepository.findByEmail(email);
+
+    if (existingUser && existingUser.email === email) {
+      throw new DuplicatedEmailError(email);
+    }
+
+    try {
+      const registredUser = await this.userRepository.create({
+        username,
+        password: hashedPassword,
+        email,
+        phone,
+      });
+
+      const birthdayDate = new Date(birthday);
+      const createdProfile = await this.profileRepository.create({
+        user_id: registredUser.id,
+        birthday: birthdayDate,
+        profile_picture,
+      });
+
+      return {
+        ...registredUser,
+        profile: createdProfile,
+      };
+    } catch (err) {
+      console.log(err);
+    }
   }
 }
 
