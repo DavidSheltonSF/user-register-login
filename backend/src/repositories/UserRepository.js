@@ -26,7 +26,7 @@ class UserRepository {
     return result[0];
   }
 
-  async add(userData) {
+  async create(userData) {
     const { username, password, email, phone } = userData;
 
     let userId = undefined;

@@ -24,7 +24,7 @@ class ProfileRepository {
     return result[0];
   }
 
-  async add(profileData) {
+  async create(profileData) {
     const { user_id, birthday, profile_picture } = profileData;
 
     const [result] = await this.connection.query(

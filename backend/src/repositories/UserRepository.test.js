@@ -19,7 +19,7 @@ describe('Testing UserRepository', () => {
     connection.end();
   });
 
-  test('Should add a new user in the database', async () => {
+  test('Should create a new user in the database', async () => {
     const userRepository = new UserRepository();
 
     const user = {
@@ -29,7 +29,7 @@ describe('Testing UserRepository', () => {
       phone: '21585478565',
     };
 
-    const createduser = await userRepository.add(user);
+    const createduser = await userRepository.create(user);
 
     const result = await connection.query('SELECT * FROM users WHERE id=?', [
       createduser.id,
@@ -64,7 +64,7 @@ describe('Testing UserRepository', () => {
 
     const mappedusers = objectsToValuesArrays(users);
 
-    // Add user users
+    // create user users
     await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?
@@ -105,7 +105,7 @@ describe('Testing UserRepository', () => {
 
     const mappedusers = objectsToValuesArrays(users);
 
-    // Add user users
+    // create user users
     const [results] = await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?
@@ -150,7 +150,7 @@ describe('Testing UserRepository', () => {
 
     const mappedusers = objectsToValuesArrays(users);
 
-    // Add user users
+    // create user users
     await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?

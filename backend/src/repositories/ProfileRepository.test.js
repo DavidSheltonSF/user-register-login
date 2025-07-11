@@ -36,7 +36,7 @@ describe('Testing ProfileRepository', () => {
 
     const mappedProfiles = objectsToValuesArrays(profiles);
 
-    // Add user profiles
+    // create user profiles
     await connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
@@ -57,7 +57,7 @@ describe('Testing ProfileRepository', () => {
     expect(result[1].profile_picture).toBe(profiles[1].profile_picture);
   });
 
-  test('Should add a new profile in the database', async () => {
+  test('Should create a new profile in the database', async () => {
     const profileRepository = new ProfileRepository();
 
     const profile = {
@@ -66,7 +66,7 @@ describe('Testing ProfileRepository', () => {
       profile_picture: 'https://path.com/daafsfda',
     };
 
-    const createdProfile = await profileRepository.add(profile);
+    const createdProfile = await profileRepository.create(profile);
 
     const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
       createdProfile.id,
@@ -98,7 +98,7 @@ describe('Testing ProfileRepository', () => {
 
     const mappedProfiles = objectsToValuesArrays(profiles);
 
-    // Add user profiles
+    // create user profiles
     const [results] = await connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
@@ -157,7 +157,7 @@ describe('Testing ProfileRepository', () => {
     const mappedFakeUsers = objectsToValuesArrays(fakeUsers);
     const mappedProfiles = objectsToValuesArrays(profiles);
 
-    // Add fake users first
+    // create fake users first
     await connection.query(
       `
       INSERT INTO users (username, password, email, phone) VALUES ?
@@ -165,7 +165,7 @@ describe('Testing ProfileRepository', () => {
       [mappedFakeUsers]
     );
 
-    // Add user profiles
+    // create user profiles
     const [results] = await connection.query(
       `
       INSERT INTO profiles (user_id, birthday, profile_picture) VALUES ?
