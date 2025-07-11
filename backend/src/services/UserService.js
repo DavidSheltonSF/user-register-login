@@ -68,6 +68,8 @@ class UserService {
       profile_picture,
     });
 
+    delete createdUser.password;
+
     return {
       ...createdUser,
       profile: createdProfile,
