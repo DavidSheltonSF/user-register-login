@@ -20,14 +20,14 @@ class UserService {
     }
 
     try {
-      const registredUser = await this.userRepository.add({
+      const registredUser = await this.userRepository.create({
         username,
         password: hashedPassword,
         email,
         phone,
       });
 
-      const createdProfile = await this.profileRepository.add({
+      const createdProfile = await this.profileRepository.create({
         user_id: registredUser.id,
         birthday,
         profile_picture,
