@@ -2,6 +2,7 @@ const UserService = require('./UserService');
 const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 const BcryptHelper = require('./helpers/BcryptHelper');
+const NotOwnerError = require('./errors/NotOwnerError');
 
 describe('Testing RegisterUserService', () => {
   async function makeConnectionSUT() {
@@ -92,6 +93,23 @@ describe('Testing RegisterUserService', () => {
     expect(foundUser1.username).toBe(fakeUser1.username);
   });
 
+  test('Should throw NotOwnerError when the authenticated user ID does not match the requested ID', async () => {
+    const service = new UserService();
+
+    const user = {
+      username: 'TesterFirst',
+      password: 'test123',
+      email: 'test@bugmail.com',
+      phone: '215858484',
+      birthday: '1988-05-21',
+      profile_picture: 'https://path.com',
+    };
+
+    await service.create(user);
+
+    expect(service.findById(5, 1)).rejects.toThrow(NotOwnerError);
+  });
+
   test('Should create a new user in the database', async () => {
     const connection = await makeConnectionSUT();
     const service = new UserService();
@@ -159,6 +177,4 @@ describe('Testing RegisterUserService', () => {
       DuplicatedEmailError
     );
   });
-
-  
 });
