@@ -10,6 +10,7 @@ const {
   notFound,
   forbidden,
   serverError,
+  unauthorized,
 } = require('./http/http-helpers');
 
 class UserController {
@@ -21,67 +22,51 @@ class UserController {
       const { authUser } = request;
 
       if (!authUser) {
-        return {
-          status: 403,
-          error: 'Forbidden',
-          message: 'You are not authenticated',
-        };
+        return unauthorized('User not authenticated');
       }
 
       if (!id) {
-        return {
-          status: 400,
-          error: 'MissingIdError',
-          message: 'Id is missing',
-        };
+        return badRequest('Missing id');
       }
 
       const user = await this.service.findById(Number(id), authUser.id);
 
-      const userBirthday = user.profile.birthday;
-      const formatedBirthday = userBirthday.toISOString().split('T')[0];
-
-      return {
-        status: 200,
-        body: {
-          id: user.id,
-          username: user.username,
-          email: user.email,
-          phone: user.phone,
-          profile: {
-            id: 1,
-            birthday: formatedBirthday,
-            profile_picture: user.profile.profile_picture,
-          },
-        },
-      };
+      return ok(user);
     } catch (err) {
       console.log(err);
 
       if (err instanceof NotOwnerError) {
-        return {
-          status: 403,
-          error: 'Forbidden',
-          message: 'You do not have permission to acces this resource',
-        };
+        return forbidden(err.message);
       }
+
+      if (err instanceof NotFoundError) {
+        return notFound(err.message);
+      }
+
+      return serverError();
     }
   }
 
   async findByEmail(request) {
-    const { email } = request.body;
+    try {
+      const { email } = request.body;
 
-    if (!email) {
-      return {
-        status: 400,
-        error: 'MissingEmailError',
-        message: 'Email field is missing',
-      };
+      if (!email) {
+        return badRequest('Missing email');
+      }
+
+      const user = await this.service.findByEmail(email);
+
+      return ok(user);
+    } catch (err) {
+      console.log(err);
+
+      if (err instanceof NotFoundError) {
+        return notFound(err.message);
+      }
+
+      return serverError();
     }
-
-    const response = this.service.findByEmail(email);
-
-    return response;
   }
 
   async create(request) {
