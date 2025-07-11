@@ -2,21 +2,11 @@ const UserController = require('./UserController');
 const MysqlHelper = require('../repositories/helper/MysqlHelper');
 
 describe('Testing UserController', () => {
-  async function makeConnectionSUT() {
-    const mysqlHelper = MysqlHelper.create();
-    mysqlHelper.connect();
-    const connection = mysqlHelper.getConnection();
-
-    if (!connection) {
-      throw new Error('Connection is null');
-    }
-
-    return connection;
-  }
+  const mysqlHelper = MysqlHelper.create();
+  const connection = mysqlHelper.getConnection();
 
   beforeEach(async () => {
     try {
-      const connection = await makeConnectionSUT();
       await connection.execute('TRUNCATE TABLE users');
       await connection.execute('TRUNCATE TABLE profiles');
     } catch (err) {
@@ -25,12 +15,10 @@ describe('Testing UserController', () => {
   });
 
   afterAll(async () => {
-    const connection = await makeConnectionSUT();
     connection.end();
   });
 
   test('Should create a new user in the database', async () => {
-    const connection = await makeConnectionSUT();
     const controller = new UserController();
 
     const fakeRequest = {
