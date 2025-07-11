@@ -3,6 +3,7 @@ const ProfileRepository = require('../repositories/ProfileRepository');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 const NotOwnerError = require('./errors/NotOwnerError');
 const BcryptHelper = require('./helpers/BcryptHelper');
+const NotFoundError = require('./errors/NotFoundError');
 
 class UserService {
   userRepository = new UserRepository();
@@ -16,10 +17,11 @@ class UserService {
     const user = await this.userRepository.findById(id);
 
     if (!user) {
-      return null;
+      throw new NotFoundError('User not found.');
     }
 
     const userProfile = await this.profileRepository.findByUserId(user.id);
+
     return {
       ...user,
       profile: userProfile,
@@ -30,7 +32,7 @@ class UserService {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      return null;
+      throw new NotFoundError('User not found.');
     }
 
     const userProfile = await this.profileRepository.findByUserId(user.id);
