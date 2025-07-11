@@ -15,60 +15,6 @@ const {
 class UserController {
   service = new UserService();
 
-  async create(request) {
-    const { body } = request;
-
-    if (!body) {
-      return badRequest('Missing body request');
-    }
-
-    try {
-      const file = request.file;
-
-      const { username, password, email, phone, birthday } = body;
-
-      const requiredFields = ['username', 'password', 'email'];
-
-      const missingRequiredFields = getMissingRequiredFields(
-        body,
-        requiredFields
-      );
-
-      if (missingRequiredFields.length > 0) {
-        return badRequest(
-          `Missing required params: ${[missingRequiredFields]}`
-        );
-      }
-
-      const response = await this.service.create({
-        username,
-        password,
-        email,
-        phone,
-        birthday,
-        profile_picture: file ? file.location : undefined,
-      });
-
-      return ok(response);
-    } catch (error) {
-      if (error instanceof DuplicatedEmailError) {
-        return unprocessableEntity(
-          `A user is already associated with the email ${email}.`
-        );
-      }
-
-      if (error instanceof NotFoundError) {
-        return notFound(`User not found`);
-      }
-
-      if (error instanceof NotOwnerError) {
-        return forbidden(`User does not own the requested resource.`);
-      }
-
-      return serverError();
-    }
-  }
-
   async findById(request) {
     try {
       const { id } = request.params;
@@ -136,6 +82,60 @@ class UserController {
     const response = this.service.findByEmail(email);
 
     return response;
+  }
+
+  async create(request) {
+    const { body } = request;
+
+    if (!body) {
+      return badRequest('Missing body request');
+    }
+
+    try {
+      const file = request.file;
+
+      const { username, password, email, phone, birthday } = body;
+
+      const requiredFields = ['username', 'password', 'email'];
+
+      const missingRequiredFields = getMissingRequiredFields(
+        body,
+        requiredFields
+      );
+
+      if (missingRequiredFields.length > 0) {
+        return badRequest(
+          `Missing required params: ${[missingRequiredFields]}`
+        );
+      }
+
+      const response = await this.service.create({
+        username,
+        password,
+        email,
+        phone,
+        birthday,
+        profile_picture: file ? file.location : undefined,
+      });
+
+      return ok(response);
+    } catch (error) {
+      if (error instanceof DuplicatedEmailError) {
+        return unprocessableEntity(
+          `A user is already associated with the email ${email}.`
+        );
+      }
+
+      if (error instanceof NotFoundError) {
+        return notFound(`User not found`);
+      }
+
+      if (error instanceof NotOwnerError) {
+        return forbidden(`User does not own the requested resource.`);
+      }
+
+      return serverError();
+    }
   }
 }
 
