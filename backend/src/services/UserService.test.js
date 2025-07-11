@@ -1,12 +1,11 @@
 const UserService = require('./UserService');
-const MysqlHelper = require('../repositories/helper/MysqlHelper');
+const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 
 describe('Testing RegisterUserService', () => {
   async function makeConnectionSUT() {
-    const mysqlHelper = MysqlHelper.create();
-    mysqlHelper.connect();
-    const connection = mysqlHelper.getConnection();
+    const mysqlConnector = MysqlConnector.getInstance();
+    const connection = mysqlConnector.getConnection();
 
     if (!connection) {
       throw new Error('Connection is null');
