@@ -3,6 +3,7 @@ const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 const BcryptHelper = require('./helpers/BcryptHelper');
 const NotOwnerError = require('./errors/NotOwnerError');
+const NotFoundError = require('./errors/NotFoundError');
 
 describe('Testing RegisterUserService', () => {
   async function makeConnectionSUT() {
@@ -93,6 +94,11 @@ describe('Testing RegisterUserService', () => {
     expect(foundUser1.username).toBe(fakeUser1.username);
   });
 
+  test('Should throw NotFoundError when a user with the given email is not found', async () => {
+    const service = new UserService();
+    expect(service.findByEmail('notfound@bugmail.com')).rejects.toThrow(NotFoundError);
+  });
+
   test('Should throw NotOwnerError when the authenticated user ID does not match the requested ID', async () => {
     const service = new UserService();
 
@@ -108,6 +114,11 @@ describe('Testing RegisterUserService', () => {
     await service.create(user);
 
     expect(service.findById(5, 1)).rejects.toThrow(NotOwnerError);
+  });
+
+  test('Should throw NotFoundError when a user with the given ID is not found', async () => {
+    const service = new UserService();
+    expect(service.findById(1, 1)).rejects.toThrow(NotFoundError);
   });
 
   test('Should create a new user in the database', async () => {
