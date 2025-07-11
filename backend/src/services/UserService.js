@@ -42,12 +42,9 @@ class UserService {
 
     const userProfile = await this.profileRepository.findByUserId(user.id);
 
-    const serializedUser = serializeUser(user);
-    const serializedProfile = serializeProfile(userProfile);
-
     return {
-      ...serializedUser,
-      profile: serializedProfile,
+      ...user,
+      profile: userProfile,
     };
   }
   async create(userData) {
