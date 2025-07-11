@@ -69,4 +69,24 @@ describe('Testing UserController', () => {
 
     expect(response.status).toBe(badRequest().status);
   });
+
+  test('Should return BadRequest(400) if password is not provided in the body request', async () => {
+    const controller = new UserController();
+
+    const fakeRequest = {
+      file: {
+        location: 'https://path.com',
+      },
+      body: {
+        username: 'fakeName',
+        email: 'test@bugmail.com',
+        phone: '215858484',
+        birthday: '1988-05-21',
+      },
+    };
+
+    const response = await controller.create(fakeRequest);
+
+    expect(response.status).toBe(badRequest().status);
+  });
 });
