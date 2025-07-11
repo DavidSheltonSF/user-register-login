@@ -54,28 +54,24 @@ class UserService {
 
     const hashedPassword = await BcryptHelper.hashPassword(password);
 
-    try {
-      const registredUser = await this.userRepository.create({
-        username,
-        password: hashedPassword,
-        email,
-        phone,
-      });
+    const registredUser = await this.userRepository.create({
+      username,
+      password: hashedPassword,
+      email,
+      phone,
+    });
 
-      const birthdayDate = new Date(birthday);
-      const createdProfile = await this.profileRepository.create({
-        user_id: registredUser.id,
-        birthday: birthdayDate,
-        profile_picture,
-      });
+    const birthdayDate = new Date(birthday);
+    const createdProfile = await this.profileRepository.create({
+      user_id: registredUser.id,
+      birthday: birthdayDate,
+      profile_picture,
+    });
 
-      return {
-        ...registredUser,
-        profile: createdProfile,
-      };
-    } catch (err) {
-      console.log(err);
-    }
+    return {
+      ...registredUser,
+      profile: createdProfile,
+    };
   }
 }
 
