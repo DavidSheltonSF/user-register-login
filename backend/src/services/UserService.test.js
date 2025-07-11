@@ -148,8 +148,6 @@ describe('Testing CreateUserService', () => {
 
     const [foundUser] = result[0];
 
-    console.log(foundUser);
-
     expect(registredUser.id).toBeTruthy();
     expect(registredUser.email).toBe(user.email);
     expect(registredUser.phone).toBe(user.phone);
