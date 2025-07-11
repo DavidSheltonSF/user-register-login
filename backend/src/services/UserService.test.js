@@ -30,7 +30,7 @@ describe('Testing RegisterUserService', () => {
     connection.end();
   });
 
-  test('Should register a new user in the database', async () => {
+  test('Should create a new user in the database', async () => {
     const connection = await makeConnectionSUT();
     const service = new UserService();
 
