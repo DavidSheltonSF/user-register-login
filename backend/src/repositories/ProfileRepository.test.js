@@ -44,7 +44,7 @@ describe('Testing ProfileRepository', () => {
       [mappedProfiles]
     );
 
-    const result = await profileRepository.findAllprofiles();
+    const result = await profileRepository.findAll();
 
     expect(result.length).toBe(profiles.length);
 
@@ -86,8 +86,8 @@ describe('Testing ProfileRepository', () => {
     const profileId1 = results.insertId;
     const profileId2 = results.insertId + 1;
 
-    const foundProfile1 = await profileRepository.findprofileById(profileId1);
-    const foundProfile2 = await profileRepository.findprofileById(profileId2);
+    const foundProfile1 = await profileRepository.findById(profileId1);
+    const foundProfile2 = await profileRepository.findById(profileId2);
 
     expect(foundProfile1.user_id).toBe(profiles[0].user_id);
     expect(foundProfile1.birthday.getTime()).toBe(
@@ -155,8 +155,8 @@ describe('Testing ProfileRepository', () => {
     const userId1 = results.insertId;
     const userId2 = results.insertId + 1;
 
-    const foundProfile1 = await profileRepository.findprofileByUserId(userId1);
-    const foundProfile2 = await profileRepository.findprofileByUserId(userId2);
+    const foundProfile1 = await profileRepository.findByUserId(userId1);
+    const foundProfile2 = await profileRepository.findByUserId(userId2);
 
     expect(foundProfile1.user_id).toBe(userId1);
     expect(foundProfile1.user_id).toBe(profiles[0].user_id);

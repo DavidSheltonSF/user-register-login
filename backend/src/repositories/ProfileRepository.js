@@ -3,12 +3,12 @@ const MysqlConnector = require('./helper/MysqlConnector');
 class ProfileRepository {
   connection = MysqlConnector.getInstance().getConnection();
 
-  async findAllprofiles() {
+  async findAll() {
     const result = await this.connection.query('SELECT * FROM profiles');
     return result[0];
   }
 
-  async findprofileById(id) {
+  async findById(id) {
     const [result] = await this.connection.query(
       'SELECT * FROM profiles WHERE id=?',
       [id]
@@ -16,7 +16,7 @@ class ProfileRepository {
     return result[0];
   }
 
-  async findprofileByUserId(id) {
+  async findByUserId(id) {
     const [result] = await this.connection.query(
       'SELECT * FROM profiles WHERE user_id=?',
       [id]

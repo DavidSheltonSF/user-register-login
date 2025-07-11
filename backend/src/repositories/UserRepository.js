@@ -3,19 +3,19 @@ const MysqlConnector = require('./helper/MysqlConnector');
 class UserRepository {
   connection = MysqlConnector.getInstance().getConnection();
 
-  async findAllUsers() {
+  async findAll() {
     const result = await this.connection.query('SELECT * FROM users');
     return result[0];
   }
 
-  async findUserById(id) {
+  async findById(id) {
     const [result] = await this.connection.query('SELECT * FROM users WHERE id=?', [
       id,
     ]);
     return result[0];
   }
 
-  async findUserByEmail(email) {
+  async findByEmail(email) {
     const [result] = await this.connection.query(
       'SELECT * FROM users WHERE email=?',
       [email]

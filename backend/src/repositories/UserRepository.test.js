@@ -47,7 +47,7 @@ describe('Testing UserRepository', () => {
       [mappedusers]
     );
 
-    const result = await userRepository.findAllUsers();
+    const result = await userRepository.findAll();
 
     expect(result[0].username).toBe(users[0].username);
     expect(result[0].password).toBe(users[0].password);
@@ -91,8 +91,8 @@ describe('Testing UserRepository', () => {
     const userId1 = results.insertId;
     const userId2 = results.insertId + 1;
 
-    const founduser1 = await userRepository.findUserById(userId1);
-    const founduser2 = await userRepository.findUserById(userId2);
+    const founduser1 = await userRepository.findById(userId1);
+    const founduser2 = await userRepository.findById(userId2);
 
     expect(founduser1.username).toBe(users[0].username);
     expect(founduser1.password).toBe(users[0].password);
@@ -133,8 +133,8 @@ describe('Testing UserRepository', () => {
       [mappedusers]
     );
 
-    const founduser1 = await userRepository.findUserByEmail(users[0].email);
-    const founduser2 = await userRepository.findUserByEmail(users[1].email);
+    const founduser1 = await userRepository.findByEmail(users[0].email);
+    const founduser2 = await userRepository.findByEmail(users[1].email);
 
     expect(founduser1.username).toBe(users[0].username);
     expect(founduser1.password).toBe(users[0].password);
