@@ -1,6 +1,7 @@
 const UserController = require('./UserController');
 const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const BcryptHelper = require('../services/helpers/BcryptHelper');
+const { badRequest } = require('./http/http-helpers');
 
 describe('Testing UserController', () => {
   const mysqlHelper = MysqlConnector.getInstance();
@@ -47,5 +48,25 @@ describe('Testing UserController', () => {
     expect(bodyRequest.email).toBe(data.email);
     expect(bodyRequest.phone).toBe(data.phone);
     expect(fakeRequest.file.location).toBe(data.profile.profile_picture);
+  });
+
+  test('Should return BadRequest(400) if username is not provided in the body request', async () => {
+    const controller = new UserController();
+
+    const fakeRequest = {
+      file: {
+        location: 'https://path.com',
+      },
+      body: {
+        password: 'test123',
+        email: 'test@bugmail.com',
+        phone: '215858484',
+        birthday: '1988-05-21',
+      },
+    };
+
+    const response = await controller.create(fakeRequest);
+
+    expect(response.status).toBe(badRequest().status);
   });
 });
