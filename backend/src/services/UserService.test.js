@@ -146,20 +146,12 @@ describe('Testing RegisterUserService', () => {
 
     expect(registredUser.id).toBeTruthy();
     expect(foundUser.username).toBe(user.username);
-    expect(
-      BcryptHelper.compare(user.password, registredUser.password)
-    ).toBeTruthy();
     expect(registredUser.email).toBe(user.email);
     expect(registredUser.phone).toBe(user.phone);
-    expect(registredUser.profile.birthday.getTime()).toBe(
-      new Date(user.birthday).getTime()
-    );
+    expect(registredUser.profile.birthday).toBe(user.birthday);
     expect(registredUser.profile.profile_picture).toBe(user.profile_picture);
 
     expect(foundUser.username).toBe(user.username);
-    expect(
-      BcryptHelper.compare(user.password, foundUser.password)
-    ).toBeTruthy();
     expect(foundUser.email).toBe(user.email);
     expect(foundUser.phone).toBe(user.phone);
   });

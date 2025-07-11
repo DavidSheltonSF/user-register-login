@@ -4,6 +4,7 @@ const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 const NotOwnerError = require('./errors/NotOwnerError');
 const BcryptHelper = require('./helpers/BcryptHelper');
 const NotFoundError = require('./errors/NotFoundError');
+const serializeProfile = require('./helpers/serializeProfile');
 
 class UserService {
   userRepository = new UserRepository();
@@ -70,9 +71,11 @@ class UserService {
 
     delete createdUser.password;
 
+    const serializedProfile = serializeProfile(createdProfile);
+
     return {
       ...createdUser,
-      profile: createdProfile,
+      profile: serializedProfile,
     };
   }
 }
