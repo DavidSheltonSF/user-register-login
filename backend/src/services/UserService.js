@@ -46,13 +46,13 @@ class UserService {
     const { username, password, email, phone, birthday, profile_picture } =
       userData;
 
-    const hashedPassword = await BcryptHelper.hashPassword(password);
-
     const existingUser = await this.userRepository.findByEmail(email);
 
     if (existingUser && existingUser.email === email) {
       throw new DuplicatedEmailError(email);
     }
+
+    const hashedPassword = await BcryptHelper.hashPassword(password);
 
     try {
       const registredUser = await this.userRepository.create({
