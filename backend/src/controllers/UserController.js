@@ -105,9 +105,11 @@ class UserController {
 
       return ok(response);
     } catch (error) {
+      const body = request.body;
+
       if (error instanceof DuplicatedEmailError) {
         return unprocessableEntity(
-          `A user is already associated with the email ${email}.`
+          `A user is already associated with the email ${body.email}.`
         );
       }
 
