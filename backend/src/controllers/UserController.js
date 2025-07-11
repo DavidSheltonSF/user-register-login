@@ -113,14 +113,6 @@ class UserController {
         );
       }
 
-      if (error instanceof NotFoundError) {
-        return notFound(`User not found`);
-      }
-
-      if (error instanceof NotOwnerError) {
-        return forbidden(`User does not own the requested resource.`);
-      }
-
       return serverError();
     }
   }
