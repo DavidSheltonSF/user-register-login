@@ -1,8 +1,9 @@
 const UserController = require('./UserController');
-const MysqlHelper = require('../repositories/helper/MysqlHelper');
+const MysqlConnector = require('../repositories/helper/MysqlConnector');
+const BcryptHelper = require('../services/helpers/BcryptHelper');
 
 describe('Testing UserController', () => {
-  const mysqlHelper = MysqlHelper.create();
+  const mysqlHelper = MysqlConnector.getInstance();
   const connection = mysqlHelper.getConnection();
 
   beforeEach(async () => {
@@ -22,22 +23,35 @@ describe('Testing UserController', () => {
     const controller = new UserController();
 
     const fakeRequest = {
+      file: {
+        location: 'https://path.com',
+      },
       body: {
         username: 'TesterFirst',
         password: 'test123',
         email: 'test@bugmail.com',
         phone: '215858484',
         birthday: '1988-05-21',
-        profile_picture: 'https://path.com',
       },
     };
 
     const response = await controller.create(fakeRequest);
 
-    expect(response.status).toBe(200);
-    expect(response.body.username).toBe(fakeRequest.body.username);
-  });
+    const data = response?.data;
 
+    const bodyRequest = fakeRequest.body;
+
+    expect(response.status).toBe(200);
+    expect(data).toBeTruthy();
+    expect(bodyRequest.username).toBe(data.username);
+    expect(bodyRequest.username).toBe(data.username);
+    expect(
+      BcryptHelper.compare(bodyRequest.password, data.password)
+    ).toBeTruthy();
+    expect(bodyRequest.email).toBe(data.email);
+    expect(bodyRequest.phone).toBe(data.phone);
+    expect(fakeRequest.file.location).toBe(data.profile.profile_picture);
+  });
   test('Should find user by id', async () => {
     const controller = new UserController();
 
