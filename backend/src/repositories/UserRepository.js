@@ -5,7 +5,6 @@ class UserRepository {
 
   async findAllUsers() {
     const result = await this.connection.query('SELECT * FROM users');
-
     return result[0];
   }
 
@@ -13,7 +12,6 @@ class UserRepository {
     const [result] = await this.connection.query('SELECT * FROM users WHERE id=?', [
       id,
     ]);
-
     return result[0];
   }
 
@@ -22,7 +20,6 @@ class UserRepository {
       'SELECT * FROM users WHERE email=?',
       [email]
     );
-
     return result[0];
   }
 
