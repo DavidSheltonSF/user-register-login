@@ -57,29 +57,6 @@ describe('Testing ProfileRepository', () => {
     expect(result[1].profile_picture).toBe(profiles[1].profile_picture);
   });
 
-  test('Should create a new profile in the database', async () => {
-    const profileRepository = new ProfileRepository();
-
-    const profile = {
-      user_id: 1,
-      birthday: new Date('2002-02-26'),
-      profile_picture: 'https://path.com/daafsfda',
-    };
-
-    const createdProfile = await profileRepository.create(profile);
-
-    const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
-      createdProfile.id,
-    ]);
-
-    const [foundprofile] = result[0];
-
-    expect(createdProfile.id).toBeTruthy();
-    expect(foundprofile.user_id).toBe(profile.user_id);
-    expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
-    expect(foundprofile.profile_picture).toBe(profile.profile_picture);
-  });
-
   test('Should find a profile by id', async () => {
     const profileRepository = new ProfileRepository();
 
@@ -194,5 +171,28 @@ describe('Testing ProfileRepository', () => {
       profiles[1].birthday.getTime()
     );
     expect(foundProfile2.profile_picture).toBe(profiles[1].profile_picture);
+  });
+
+  test('Should create a new profile in the database', async () => {
+    const profileRepository = new ProfileRepository();
+
+    const profile = {
+      user_id: 1,
+      birthday: new Date('2002-02-26'),
+      profile_picture: 'https://path.com/daafsfda',
+    };
+
+    const createdProfile = await profileRepository.create(profile);
+
+    const result = await connection.query('SELECT * FROM profiles WHERE id=?', [
+      createdProfile.id,
+    ]);
+
+    const [foundprofile] = result[0];
+
+    expect(createdProfile.id).toBeTruthy();
+    expect(foundprofile.user_id).toBe(profile.user_id);
+    expect(foundprofile.birthday.getTime()).toBe(profile.birthday.getTime());
+    expect(foundprofile.profile_picture).toBe(profile.profile_picture);
   });
 });
