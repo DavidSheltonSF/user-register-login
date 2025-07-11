@@ -91,8 +91,6 @@ class UserController {
       if (!body) {
         return badRequest('Missing body request');
       }
-      
-      const file = request.file;
 
       const { username, password, email, phone, birthday } = body;
 
@@ -108,6 +106,8 @@ class UserController {
           `Missing required params: ${[missingRequiredFields]}`
         );
       }
+
+      const file = request.file;
 
       const response = await this.service.create({
         username,
