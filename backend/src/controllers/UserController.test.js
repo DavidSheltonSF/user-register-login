@@ -1,7 +1,7 @@
 const UserController = require('./UserController');
 const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const BcryptHelper = require('../services/helpers/BcryptHelper');
-const { badRequest } = require('./http/http-helpers');
+const { badRequest, unprocessableEntity } = require('./http/http-helpers');
 
 describe('Testing UserController', () => {
   const mysqlHelper = MysqlConnector.getInstance();
@@ -88,5 +88,29 @@ describe('Testing UserController', () => {
     const response = await controller.create(fakeRequest);
 
     expect(response.status).toBe(badRequest().status);
+  });
+
+  test('Should return UnprocessableEntity(422) if the email provided is already associated with a user', async () => {
+    const controller = new UserController();
+
+    const fakeRequest = {
+      file: {
+        location: 'https://path.com',
+      },
+      body: {
+        username: 'fakeName',
+        password: 'Dafdsnfiasf',
+        email: 'test@bugmail.com',
+        phone: '215858484',
+        birthday: '1988-05-21',
+      },
+    };
+
+    await controller.create(fakeRequest);
+    const response = await controller.create(fakeRequest);
+
+    console.log(response)
+
+    expect(response.status).toBe(unprocessableEntity().status);
   });
 });
