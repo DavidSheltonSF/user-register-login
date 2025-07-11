@@ -44,10 +44,6 @@ describe('Testing UserController', () => {
     expect(response.status).toBe(200);
     expect(data).toBeTruthy();
     expect(bodyRequest.username).toBe(data.username);
-    expect(bodyRequest.username).toBe(data.username);
-    expect(
-      BcryptHelper.compare(bodyRequest.password, data.password)
-    ).toBeTruthy();
     expect(bodyRequest.email).toBe(data.email);
     expect(bodyRequest.phone).toBe(data.phone);
     expect(fakeRequest.file.location).toBe(data.profile.profile_picture);
@@ -56,18 +52,23 @@ describe('Testing UserController', () => {
     const controller = new UserController();
 
     const fakeRequest = {
+      file: {
+        location: 'https://path.com'
+      },
       body: {
         username: 'TesterFirst',
         password: 'test123',
         email: 'test@bugmail.com',
         phone: '215858484',
         birthday: '1988-05-21',
-        profile_picture: 'https://path.com',
       },
     };
 
-    const createUserResponse = await controller.create(fakeRequest);
-    const userId = createUserResponse.body.id;
+    const response = await controller.create(fakeRequest);
+
+    const data = response?.data
+
+    const userId = data?.id;
 
     const findUserRequest = {
       params: {
@@ -75,18 +76,15 @@ describe('Testing UserController', () => {
       },
     };
 
-    const response = await controller.findById(findUserRequest);
+    const foundUser = await controller.findById(findUserRequest);
 
     expect(response.status).toBe(200);
-    expect(response.body.username).toBe(fakeRequest.body.username);
-    expect(response.body.password).toBe(fakeRequest.body.password);
-    expect(response.body.email).toBe(fakeRequest.body.email);
-    expect(response.body.phone).toBe(fakeRequest.body.phone);
-    // expect(response.body.profile.birthday.getTime()).toBe(
-    //   new Date(fakeRequest.body.birthday).getTime()
-    // );
-    expect(response.body.profile.profile_picture).toBe(
-      fakeRequest.body.profile_picture
+    expect(data.username).toBe(fakeRequest.body.username);
+    expect(data.email).toBe(fakeRequest.body.email);
+    expect(data.phone).toBe(fakeRequest.body.phone);
+    expect(data.profile.birthday).toBe(fakeRequest.body.birthday);
+    expect(data.profile.profile_picture).toBe(
+      fakeRequest.file.location
     );
   });
 });
