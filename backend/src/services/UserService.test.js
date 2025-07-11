@@ -5,7 +5,7 @@ const BcryptHelper = require('./helpers/BcryptHelper');
 const NotOwnerError = require('./errors/NotOwnerError');
 const NotFoundError = require('./errors/NotFoundError');
 
-describe('Testing RegisterUserService', () => {
+describe('Testing CreateUserService', () => {
   async function makeConnectionSUT() {
     const mysqlConnector = MysqlConnector.getInstance();
     const connection = mysqlConnector.getConnection();
