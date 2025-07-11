@@ -105,7 +105,7 @@ describe('Testing UserRepository', () => {
     expect(founduser2.phone).toBe(users[1].phone);
   });
 
-  test('Should find a user by id', async () => {
+  test('Should find a user by email', async () => {
     const userRepository = new UserRepository();
 
     const users = [
