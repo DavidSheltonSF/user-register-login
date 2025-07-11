@@ -35,15 +35,15 @@ class UserRepository {
 
     const userId = await result.insertId;
 
-    const response = await this.connection.query('SELECT * FROM users WHERE id=?', [
+    const [response] = await this.connection.query('SELECT * FROM users WHERE id=?', [
       userId,
     ]);
 
-    if (response[0].length === 0) {
+    if (response.length === 0) {
       return null;
     }
 
-    const [foundUser] = response[0];
+    const [foundUser] = response;
 
     return {
       id: userId,
