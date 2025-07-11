@@ -5,6 +5,7 @@ const NotOwnerError = require('./errors/NotOwnerError');
 const BcryptHelper = require('./helpers/BcryptHelper');
 const NotFoundError = require('./errors/NotFoundError');
 const serializeProfile = require('./helpers/serializeProfile');
+const serializeUser = require('./helpers/serializeUser');
 
 class UserService {
   userRepository = new UserRepository();
@@ -23,9 +24,12 @@ class UserService {
 
     const userProfile = await this.profileRepository.findByUserId(user.id);
 
+    const serializedUser = serializeUser(user);
+    const serializedProfile = serializeProfile(userProfile);
+
     return {
-      ...user,
-      profile: userProfile,
+      ...serializedUser,
+      profile: serializedProfile,
     };
   }
 
@@ -38,9 +42,12 @@ class UserService {
 
     const userProfile = await this.profileRepository.findByUserId(user.id);
 
+    const serializedUser = serializeUser(user);
+    const serializedProfile = serializeProfile(userProfile);
+
     return {
-      ...user,
-      userProfile,
+      ...serializedUser,
+      profile: serializedProfile,
     };
   }
   async create(userData) {
@@ -71,10 +78,11 @@ class UserService {
 
     delete createdUser.password;
 
+    const serializedUser = serializeUser(createdUser);
     const serializedProfile = serializeProfile(createdProfile);
 
     return {
-      ...createdUser,
+      ...serializedUser,
       profile: serializedProfile,
     };
   }
