@@ -4,6 +4,7 @@ const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
 const BcryptHelper = require('./helpers/BcryptHelper');
 const NotOwnerError = require('./errors/NotOwnerError');
 const NotFoundError = require('./errors/NotFoundError');
+const InvalidPasswordError = require('./errors/InvalidPasswordError');
 
 describe('Testing CreateUserService', () => {
   const mysqlConnector = MysqlConnector.getInstance();
@@ -173,5 +174,56 @@ describe('Testing CreateUserService', () => {
     await expect(service.create(userWithDuplicatedEmail)).rejects.toThrow(
       DuplicatedEmailError
     );
+  });
+
+  test('Should login user properly', async () => {
+    const service = new UserService();
+
+    const user = {
+      username: 'Jeraldo',
+      password: 'jj123',
+      email: 'jeraldo@email.com',
+      phone: '215585871',
+      birthday: '1980-05-12',
+      profile_picture: 'https://path/jera',
+    };
+
+    await service.create(user);
+
+    const authData = await service.login(user.email, user.password);
+
+    const authUser = authData.user;
+    const token = authData.token;
+
+    expect(authUser.username).toBe(user.username);
+    expect(authUser.email).toBe(user.email);
+    expect(authUser.phone).toBe(user.phone);
+    expect(token).toBeTruthy();
+  });
+
+  test('Should throw NotFoundError if user is not found', async () => {
+    const service = new UserService();
+    await expect(service.login('notfound@email.com', 'dfadf')).rejects.toThrow(
+      NotFoundError
+    );
+  });
+
+  test('Should throw InvalidPasswordError if password is incorrect', async () => {
+    const service = new UserService();
+
+    const user = {
+      username: 'Jeraldo',
+      password: 'jj123',
+      email: 'jeraldo@email.com',
+      phone: '215585871',
+      birthday: '1980-05-12',
+      profile_picture: 'https://path/jera',
+    };
+
+    await service.create(user);
+
+    await expect(
+      service.login(user.email, 'incorrectPassword')
+    ).rejects.toThrow(InvalidPasswordError);
   });
 });

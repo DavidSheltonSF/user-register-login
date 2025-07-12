@@ -1,3 +1,5 @@
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 const UserRepository = require('../repositories/UserRepository');
 const ProfileRepository = require('../repositories/ProfileRepository');
 const DuplicatedEmailError = require('./errors/DuplicatedEmailError');
@@ -6,6 +8,9 @@ const BcryptHelper = require('./helpers/BcryptHelper');
 const NotFoundError = require('./errors/NotFoundError');
 const serializeProfile = require('./helpers/serializeProfile');
 const serializeUser = require('./helpers/serializeUser');
+const InvalidPasswordError = require('./errors/InvalidPasswordError');
+
+dotenv.config();
 
 class UserService {
   userRepository = new UserRepository();
@@ -81,6 +86,29 @@ class UserService {
     return {
       ...serializedUser,
       profile: serializedProfile,
+    };
+  }
+
+  async login(email, password) {
+    const user = await this.userRepository.findByEmail(email);
+
+    if (user == null) {
+      throw new NotFoundError('User with the email provided was not found');
+    }
+
+    const passwordsMatch = await BcryptHelper.compare(password, user.password);
+
+    if (!passwordsMatch) {
+      throw new InvalidPasswordError();
+    }
+
+    const token = jwt.sign(user, process.env.MY_SECRET, { expiresIn: '1h' });
+
+    const serializedUser = serializeUser(user);
+
+    return {
+      user: serializedUser,
+      token,
     };
   }
 }
