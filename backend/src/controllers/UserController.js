@@ -79,32 +79,20 @@ class UserController {
     const requiredFields = ['username', 'password', 'email'];
     validateRequiredFields(body, requiredFields);
 
-    try {
-      const { username, password, email, phone, birthday } = body;
+    const { username, password, email, phone, birthday } = body;
 
-      const file = request.file;
+    const file = request.file;
 
-      const response = await this.service.create({
-        username,
-        password,
-        email,
-        phone,
-        birthday,
-        profile_picture: file ? file.location : undefined,
-      });
+    const response = await this.service.create({
+      username,
+      password,
+      email,
+      phone,
+      birthday,
+      profile_picture: file ? file.location : undefined,
+    });
 
-      return ok(response);
-    } catch (error) {
-      const body = request.body;
-
-      if (error instanceof DuplicatedEmailError) {
-        return unprocessableEntity(
-          `A user is already associated with the email ${body.email}.`
-        );
-      }
-
-      return serverError();
-    }
+    return ok(response);
   }
 }
 
