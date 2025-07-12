@@ -1,3 +1,4 @@
+const { serverError } = require('../controllers/http/http-helpers');
 const UserController = require('../controllers/UserController');
 
 async function findById(req, res) {
@@ -5,25 +6,11 @@ async function findById(req, res) {
     const userController = new UserController();
     const response = await userController.findById(req);
 
-    if (response && response.error) {
-      res.status(response.status).send({
-        status: response.status,
-        error: response.error,
-        message: response.message,
-      });
-      return;
-    }
+    res.status(response.status).send(response);
 
-    res.status(response.status).send({
-      body: response.body,
-    });
   } catch (error) {
     console.log(error)
-    res.status(500).send({
-      status: 500,
-      error: 'ServerError',
-      message: 'Something went wrong inside the server'
-    })
+    res.status(500).send(serverError());
   }
 }
 
