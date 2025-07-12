@@ -22,15 +22,12 @@ loginForm.addEventListener('submit', async (e) => {
 
     const data = await response.json();
 
-    if (response.status < 400) {
-      window.location.href = './profile.html';
-    } else if (response.status < 500) {
-      alert(data.message);
-      console.log(data.message);
-    } else {
-      alert('Server Error');
-      console.log(response);
+    if (response.status >= 400) {
+      alert(data.error);
+      return;
     }
+
+    window.location.href = './profile.html';
   } catch (err) {
     console.log(err);
     alert('Server Error');
