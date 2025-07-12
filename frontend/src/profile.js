@@ -5,25 +5,27 @@ infoContainer.innerHTML = `
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const response = await fetch('http://localhost:3000/me', {
+    const meResponse = await fetch('http://localhost:3000/me', {
       credentials: 'include',
       method: 'GET',
     });
 
-    const data = await response.json();
+    const meData = (await meResponse.json()).data;
 
-    const userId = data.body.userId;
+    const userId = meData.userId;
 
-    const userResponse = await fetch('http://localhost:3000/user/' + userId, {
+    const response = await fetch('http://localhost:3000/user/' + userId, {
       credentials: 'include',
       method: 'GET',
     });
 
-    const userData = (await userResponse.json()).body;
+    const userData = (await response.json()).data;
 
     console.log(userData);
 
-    const {username, email, phone, profile} = userData;
+    const { username, email, phone, profile } = userData;
+
+    console.log(userData);
 
     infoContainer.innerHTML = `
       <form id="register-form" action="">
@@ -59,21 +61,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             </div>
           </form>`;
 
-      const mainTitle = document.querySelector('.main-title');
-      const profilePicture = document.querySelector('.profile-picture');
-      const usernameField = document.querySelector('.username-field');
-      const emailField = document.querySelector('.email-field');
-      const phoneField = document.querySelector('.phone-field');
-      const birthdayField = document.querySelector('.birthday-field');
+    const mainTitle = document.querySelector('.main-title');
+    const profilePicture = document.querySelector('.profile-picture');
+    const usernameField = document.querySelector('.username-field');
+    const emailField = document.querySelector('.email-field');
+    const phoneField = document.querySelector('.phone-field');
+    const birthdayField = document.querySelector('.birthday-field');
 
-      mainTitle.innerText = `Hi, ${username}!`;
-      profilePicture.src = profile.profile_picture
-      usernameField.value = username;
-      emailField.value = email;
-      phoneField.value = phone;
-      birthdayField.value = profile.birthday;
+    mainTitle.innerText = `Hi, ${username}!`;
+    usernameField.value = username;
+    emailField.value = email;
+    phoneField.value = phone;
+    birthdayField.value = profile.birthday;
 
-      console.log(profile.profile_picture)
+    if (profile.profile_picture) {
+      profilePicture.src = profile.profile_picture;
+    }
 
   } catch (err) {
     console.log(err);
