@@ -2,6 +2,8 @@ const UserController = require('./UserController');
 const MysqlConnector = require('../repositories/helper/MysqlConnector');
 const BcryptHelper = require('../services/helpers/BcryptHelper');
 const { badRequest, unprocessableEntity } = require('./http/http-helpers');
+const MissingFieldsError = require('./errors/MissingFieldsError');
+const DuplicatedEmailError = require('../services/errors/DuplicatedEmailError');
 
 describe('Testing UserController', () => {
   const mysqlHelper = MysqlConnector.getInstance();
@@ -50,7 +52,7 @@ describe('Testing UserController', () => {
     expect(fakeRequest.file.location).toBe(data.profile.profile_picture);
   });
 
-  test('Should return BadRequest(400) if username is not provided in the body request', async () => {
+  test('Should throw MissingFieldsError if username is not provided in the body request', async () => {
     const controller = new UserController();
 
     const fakeRequest = {
@@ -65,12 +67,12 @@ describe('Testing UserController', () => {
       },
     };
 
-    const response = await controller.create(fakeRequest);
-
-    expect(response.status).toBe(badRequest().status);
+    await expect(controller.create(fakeRequest)).rejects.toThrow(
+      MissingFieldsError
+    );
   });
 
-  test('Should return BadRequest(400) if password is not provided in the body request', async () => {
+  test('Should return MissingFieldsError if password is not provided in the body request', async () => {
     const controller = new UserController();
 
     const fakeRequest = {
@@ -85,12 +87,12 @@ describe('Testing UserController', () => {
       },
     };
 
-    const response = await controller.create(fakeRequest);
-
-    expect(response.status).toBe(badRequest().status);
+    await expect(controller.create(fakeRequest)).rejects.toThrow(
+      MissingFieldsError
+    );
   });
 
-  test('Should return UnprocessableEntity(422) if the email provided is already associated with a user', async () => {
+  test('Should throw DuplicatedEmailError if the email provided is already associated with a user', async () => {
     const controller = new UserController();
 
     const fakeRequest = {
@@ -107,8 +109,9 @@ describe('Testing UserController', () => {
     };
 
     await controller.create(fakeRequest);
-    const response = await controller.create(fakeRequest);
 
-    expect(response.status).toBe(unprocessableEntity().status);
+    await expect(controller.create(fakeRequest)).rejects.toThrow(
+      DuplicatedEmailError
+    );
   });
 });
