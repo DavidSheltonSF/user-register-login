@@ -203,14 +203,14 @@ describe('Testing CreateUserService', () => {
     expect(token).toBeTruthy();
   });
 
-  test('Should throw NotFoundError if user is not found', async () => {
+  test('Should throw NotFoundError when trying to login a user with not found email', async () => {
     const service = new UserService();
     await expect(service.login('notfound@email.com', 'dfadf')).rejects.toThrow(
       NotFoundError
     );
   });
 
-  test('Should throw InvalidPasswordError if password is incorrect', async () => {
+  test('Should throw InvalidPasswordError when trying to login a user with incorrect password', async () => {
     const service = new UserService();
 
     const user = {
