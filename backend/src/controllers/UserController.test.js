@@ -8,6 +8,7 @@ const DuplicatedEmailError = require('../services/errors/DuplicatedEmailError');
 describe('Testing UserController', () => {
   const mysqlHelper = MysqlConnector.getInstance();
   const connection = mysqlHelper.getConnection();
+  const controller = new UserController();
 
   beforeEach(async () => {
     try {
@@ -23,8 +24,6 @@ describe('Testing UserController', () => {
   });
 
   test('Should create a new user in the database', async () => {
-    const controller = new UserController();
-
     const fakeRequest = {
       file: {
         location: 'https://path.com',
@@ -53,8 +52,6 @@ describe('Testing UserController', () => {
   });
 
   test('Should throw MissingFieldsError if username is not provided in the body request', async () => {
-    const controller = new UserController();
-
     const fakeRequest = {
       file: {
         location: 'https://path.com',
@@ -73,8 +70,6 @@ describe('Testing UserController', () => {
   });
 
   test('Should return MissingFieldsError if password is not provided in the body request', async () => {
-    const controller = new UserController();
-
     const fakeRequest = {
       file: {
         location: 'https://path.com',
@@ -93,8 +88,6 @@ describe('Testing UserController', () => {
   });
 
   test('Should throw DuplicatedEmailError if the email provided is already associated with a user', async () => {
-    const controller = new UserController();
-
     const fakeRequest = {
       file: {
         location: 'https://path.com',
