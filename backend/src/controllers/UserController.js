@@ -48,25 +48,14 @@ class UserController {
   }
 
   async findByEmail(request) {
-    try {
-      const { email } = request.body;
+    const body = request.body;
 
-      if (!email) {
-        return badRequest('Missing email');
-      }
+    validateBodyExistance(body);
+    validateRequiredFields(body, ['email']);
 
-      const user = await this.service.findByEmail(email);
+    const user = await this.service.findByEmail(email);
 
-      return ok(user);
-    } catch (err) {
-      console.log(err);
-
-      if (err instanceof NotFoundError) {
-        return notFound(err.message);
-      }
-
-      return serverError();
-    }
+    return user;
   }
 
   async create(request) {
