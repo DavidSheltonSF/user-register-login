@@ -3,6 +3,8 @@ const NotFoundError = require('../services/errors/NotFoundError');
 const NotOwnerError = require('../services/errors/NotOwnerError');
 const UserService = require('../services/UserService');
 const getMissingRequiredFields = require('./helpers/getMissingRequiredFields');
+const validateRequiredFields = require('./helpers/validateRequiredFields');
+const validateBodyExistance = require('./helpers/vlidateBodyExistance');
 const {
   badRequest,
   ok,
@@ -70,27 +72,15 @@ class UserController {
   }
 
   async create(request) {
+    const { body } = request;
+
+    validateBodyExistance(body);
+
+    const requiredFields = ['username', 'password', 'email'];
+    validateRequiredFields(body, requiredFields);
+
     try {
-      const { body } = request;
-
-      if (!body) {
-        return badRequest('Missing body request');
-      }
-
       const { username, password, email, phone, birthday } = body;
-
-      const requiredFields = ['username', 'password', 'email'];
-
-      const missingRequiredFields = getMissingRequiredFields(
-        body,
-        requiredFields
-      );
-
-      if (missingRequiredFields.length > 0) {
-        return badRequest(
-          `Missing required params: ${[missingRequiredFields]}`
-        );
-      }
 
       const file = request.file;
 
