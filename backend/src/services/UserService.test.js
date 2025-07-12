@@ -52,7 +52,9 @@ describe('Testing CreateUserService', () => {
     expect(foundUser1.username).toBe(fakeUser1.username);
     expect(foundUser1.email).toBe(fakeUser1.email);
     expect(foundUser1.phone).toBe(fakeUser1.phone);
-    expect(foundUser1.profile.birthday).toBe(fakeUser1.birthday);
+    expect(foundUser1.profile.birthday.getTime()).toBe(
+      new Date(fakeUser1.birthday).getTime()
+    );
     expect(foundUser1.profile.profile_picture).toBe(fakeUser1.profile_picture);
   });
 
