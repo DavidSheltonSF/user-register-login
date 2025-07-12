@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const UserController = require('../controllers/UserController');
+const { serverError, ok } = require('../controllers/http/http-helpers');
 
 dotenv.config();
 
@@ -21,22 +22,18 @@ async function me(req, res) {
 
     const response = await userController.findById(req);
 
-    if (response.error) {
-      return res.status(response.status).send({
-        status: response.status,
-        error: response.error,
-        message: response.message,
-      });
+    if (response.status >= 400) {
+      return res.status(response.status).send(response);
     }
 
-    res.status(200).send({
-      status: 200,
-      body: {
-        userId: response.body.id,
-      },
-    });
+    res.status(200).send(
+      ok({
+        userId: response.data.id,
+      })
+    );
   } catch (err) {
     console.log(err);
+    res.status(500).send(serverError());
   }
 }
 
