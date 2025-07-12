@@ -7,8 +7,6 @@ Frontend:
 
 - HTML, CSS e JavaScript puro (Vanilla JS)
 
-- Interface responsiva e intuitiva
-
 - Funcionalidade de drag and drop para upload de foto de perfil
 
 Backend:
