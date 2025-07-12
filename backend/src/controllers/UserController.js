@@ -2,13 +2,11 @@ const DuplicatedEmailError = require('../services/errors/DuplicatedEmailError');
 const NotFoundError = require('../services/errors/NotFoundError');
 const NotOwnerError = require('../services/errors/NotOwnerError');
 const UserService = require('../services/UserService');
-const getMissingRequiredFields = require('./helpers/getMissingRequiredFields');
 const validateRequiredFields = require('./helpers/validateRequiredFields');
 const validateBodyExistance = require('./helpers/vlidateBodyExistance');
 const {
   badRequest,
   ok,
-  unprocessableEntity,
   notFound,
   forbidden,
   serverError,
