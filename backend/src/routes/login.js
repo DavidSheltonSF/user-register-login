@@ -5,34 +5,28 @@ const BcryptHelper = require('../services/helpers/BcryptHelper');
 const {
   unauthorized,
   serverError,
+  badRequest,
+  notFound,
+  forbidden,
 } = require('../controllers/http/http-helpers');
+const MissingBodyError = require('../controllers/errors/MissingBodyError');
+const MissingFieldsError = require('../controllers/errors/MissingFieldsError');
+const {
+  isMissingFieldsError,
+  isMissingBodyError,
+  isNotFoundError,
+  isInvalidPasswordError,
+} = require('./helpers/error-hepers');
 
 dotenv.config();
 
 async function login(req, res) {
   try {
     const userController = new UserController();
-    const { email, password } = req.body;
 
-    const response = await userController.findByEmail(req);
+    const response = await userController.login(req);
 
-    if (response.status === 404) {
-      return res.status(response.status).send(response);
-    }
-
-    const user = response.data;
-
-    const equalPassword = await BcryptHelper.compare(password, user.password);
-
-    if (!equalPassword) {
-      return res
-        .status(401)
-        .send(unauthorized('The password provided is wrong'));
-    }
-
-    delete user.password;
-
-    const token = jwt.sign(user, process.env.MY_SECRET, { expiresIn: '1h' });
+    const { token } = response.data;
 
     res.cookie('token', token, {
       httpOnly: true,
@@ -42,12 +36,22 @@ async function login(req, res) {
       maxAge: 1000 * 60 * 60, // 1 hora
     });
 
-    res.status(200).send({
-      user: user,
-      token,
-    });
-  } catch (err) {
-    console.log(err);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+
+    if (isMissingBodyError(error) || isMissingFieldsError(error)) {
+      return res.status(400).send(badRequest(error.message));
+    }
+
+    if (isNotFoundError(error)) {
+      return res.status(404).send(notFound(error.message));
+    }
+
+    if (isInvalidPasswordError(error)) {
+      return res.status(403).send(forbidden(error.message));
+    }
+
     res.status(500).send(serverError());
   }
 }
