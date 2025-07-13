@@ -1,5 +1,6 @@
 const MissingBodyError = require('../../controllers/errors/MissingBodyError');
 const MissingFieldsError = require('../../controllers/errors/MissingFieldsError');
+const InvalidPasswordError = require('../../services/errors/InvalidPasswordError');
 const NotFoundError = require('../../services/errors/NotFoundError');
 
 function isMissingBodyError(error) {
@@ -14,4 +15,13 @@ function isNotFoundError(error) {
   return error instanceof NotFoundError;
 }
 
-module.exports = {isMissingBodyError, isMissingFieldsError, isNotFoundError}
+function isInvalidPasswordError(error) {
+  return error instanceof InvalidPasswordError;
+}
+
+module.exports = {
+  isMissingBodyError,
+  isMissingFieldsError,
+  isNotFoundError,
+  isInvalidPasswordError,
+};
