@@ -11,7 +11,7 @@ async function me(req, res) {
     const token = req.cookies.token;
 
     if (!token) {
-      res.status(400).send('No toke was provided');
+      res.status(400).send('No token was provided');
     }
 
     const decoded = jwt.decode(token, process.env.MY_SECRET);
