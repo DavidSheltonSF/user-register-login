@@ -81,6 +81,23 @@ class UserController {
 
     return ok(response);
   }
+
+  async login(request) {
+    const body = request.body;
+
+    validateBodyExistance(body);
+    validateRequiredFields(body, ['email', 'password']);
+
+    const { email, password } = body;
+
+    console.log(email)
+    const { user, token } = await this.service.login(email, password);
+
+    return ok({
+      user,
+      token,
+    });
+  }
 }
 
 module.exports = UserController;

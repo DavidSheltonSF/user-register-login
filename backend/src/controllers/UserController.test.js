@@ -107,4 +107,44 @@ describe('Testing UserController', () => {
       DuplicatedEmailError
     );
   });
+
+  test('Should login a user properly', async () => {
+    const user = {
+      email: 'jeroldo@bugmail.com',
+      password: 'dsnfajkdfnaf',
+    };
+
+    const createRequest = {
+      file: {
+        location: 'https://path.com',
+      },
+      body: {
+        username: 'fakeName',
+        password: user.password,
+        email: user.email,
+        phone: '215858484',
+        birthday: '1988-05-21',
+      },
+    };
+
+    const loginRequest = {
+      body: {
+        email: user.email,
+        password: user.password,
+      },
+    };
+
+    await controller.create(createRequest);
+
+    const response = await controller.login(loginRequest);
+
+    const body = createRequest.body;
+    const userData = response.data.user;
+
+    expect(response.status).toBe(200);
+    expect(response.data.token).toBeTruthy();
+    expect(userData.username).toBe(body.username);
+    expect(userData.email).toBe(body.email);
+    expect(userData.phone).toBe(body.phone);
+  });
 });
