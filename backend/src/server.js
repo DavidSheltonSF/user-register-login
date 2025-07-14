@@ -8,9 +8,13 @@ const findById = require('./routes/findById');
 const cookieJwtAuth = require('./middlewares/cookieJwtAuth');
 const upload = require('./middlewares/upload');
 const me = require('./routes/me');
-
+const path = require('path');
 const app = express();
 const port = 3000;
+
+// These shold be put at the top to avoid error
+app.use(express.static(path.join(__dirname, '..', '..', 'frontend', 'pages')));
+app.use(express.static( path.join(__dirname, '..', '..', 'frontend')));
 
 app.use(
   cors({
@@ -18,17 +22,12 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(express.json());
 app.use(cookieParser());
 
 (async () => {
   const mysqlConnector = MysqlConnector.getInstance();
   await mysqlConnector.connect();
-
-  app.get('/', (req, res) => {
-    res.send('Eae bro? Bora finalizar esse projeto?');
-  });
 
   app.get('/me', cookieJwtAuth, me);
   app.post('/login', login);
