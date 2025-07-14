@@ -14,7 +14,7 @@ registerForm.addEventListener('submit', async (e) => {
   const formData = new FormData(form);
 
   try {
-    const response = await fetch('http://56.124.85.125:3000/register', {
+    const response = await fetch(`${config.API_URL}:3000/register`, {
       method: 'POST',
       body: formData,
     });

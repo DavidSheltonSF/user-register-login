@@ -11,7 +11,7 @@ loginForm.addEventListener('submit', async (e) => {
   };
 
   try {
-    const response = await fetch('http://56.124.85.125:3000/login', {
+    const response = await fetch(`${config.API_URL}:3000/login`, {
       method: 'POST',
       credentials: 'include',
       headers: {

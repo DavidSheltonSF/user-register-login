@@ -5,7 +5,7 @@ infoContainer.innerHTML = `
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const meResponse = await fetch('http://56.124.85.125:3000/me', {
+    const meResponse = await fetch(`${config.API_URL}:3000/me`, {
       credentials: 'include',
       method: 'GET',
     });
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const userId = meData.userId;
 
-    const response = await fetch('http://56.124.85.125:3000/user/' + userId, {
+    const response = await fetch(`${config.API_URL}:3000/user/` + userId, {
       credentials: 'include',
       method: 'GET',
     });
