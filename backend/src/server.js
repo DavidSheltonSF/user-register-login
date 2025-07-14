@@ -1,4 +1,5 @@
 const express = require('express');
+const dotenv = require('dotenv')
 const MysqlConnector = require('./repositories/helper/MysqlConnector');
 const register = require('./routes/register');
 const cookieParser = require('cookie-parser');
@@ -9,8 +10,11 @@ const cookieJwtAuth = require('./middlewares/cookieJwtAuth');
 const upload = require('./middlewares/upload');
 const me = require('./routes/me');
 const path = require('path');
+
+dotenv.config();
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
 // These shold be put at the top to avoid error
 app.use(express.static(path.join(__dirname, '..', '..', 'frontend', 'pages')));
