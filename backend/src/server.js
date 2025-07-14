@@ -22,7 +22,7 @@ app.use(express.static( path.join(__dirname, '..', '..', 'frontend')));
 
 app.use(
   cors({
-    origin: 'http://localhost:5500',
+    origin: 'http://0.0.0.0:5500',
     credentials: true,
   })
 );
@@ -38,7 +38,7 @@ app.use(cookieParser());
   app.post('/register', upload.single('profile_picture'), register);
   app.get('/user/:id', cookieJwtAuth, findById);
 
-  app.listen(port, () => {
+  app.listen(port, '0.0.0.0', () => {
     console.log(`Server listening on port ${port}`);
   });
 })();
