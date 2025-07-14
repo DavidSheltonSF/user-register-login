@@ -22,7 +22,7 @@ app.use(express.static( path.join(__dirname, '..', '..', 'frontend')));
 
 app.use(
   cors({
-    origin: 'http://0.0.0.0:5500',
+    origin: 'http://0.0.0.0:3000',
     credentials: true,
   })
 );
