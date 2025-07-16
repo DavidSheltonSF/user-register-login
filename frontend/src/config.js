@@ -1,4 +1,4 @@
 config = {
-  API_URL: 'http://localhost',
-  API_URL_DISABLED: 'http://18.230.71.132',
+  API_URL_DISABLED: 'http://localhost',
+  API_URL: 'http://18.230.71.132',
 };
